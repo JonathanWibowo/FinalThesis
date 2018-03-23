@@ -1,0 +1,35 @@
+<resources>
+    <string name="app_name">ERP Megah Jaya</string>
+    <string name="megahJaya">Megah Jaya</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="login">Login</string>
+    <string name="move">Move</string>
+    <string name="scan">Scan</string>
+    <string name="textview">TextView</string>
+    <string name="data">Data</string>
+    <string name="bayar">Bayar</string>
+    <string name="kembali">Kembali</string>
+    <string name="namaToko">Nama/Toko</string>
+    <string name="keterangan">Keterangan</string>
+    <string name="notaKontan">Nota Kontan</string>
+    <string name="ok">OK</string>
+    <string name="info">Menekan tombol OK akan menuju halaman penjualan</string>
+    <string name="penjualan">Penjualan</string>
+    <string name="historiPenjualan">Histori Penjualan</string>
+    <string name="gudang">Gudang</string>
+    <string name="barangBaru">Barang Baru</string>
+    <string name="open">Open</string>
+    <string name="close">Close</string>
+    <string name="button">Button</string>
+    <string name="tipeBon">Tipe Bon</string>
+    <string name="jumlah">Jumlah</string>
+    <string name="harga">Harga</string>
+    <string name="todo">TODO</string>
+    <string name="stockBarang">Stock Barang: </string>
+    <string name="namaBarang">Nama Barang</string>
+    <string name="kodeBarang">Kode Barang</string>
+    <string name="stokBarang">123</string>
+    <string name="hargaBarang">12300</string>
+    <string name="rp">Rp</string>
+</resources>

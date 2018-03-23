@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="wrap_content"
+    android:layout_width="match_parent"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/inventoryCardView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:contentPadding="5dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:padding="5dp">
+
+            <TextView
+                android:id="@+id/materialName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/namaBarang"
+                android:textAllCaps="true"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/materialCode"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/materialName"
+                android:layout_marginTop="8dp"
+                android:text="@string/kodeBarang"
+                android:textAllCaps="true"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/jumlahBarangText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/materialCode"
+                android:layout_marginTop="8dp"
+                android:text="@string/stockBarang"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/materialQuantity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/jumlahBarangText"
+                android:layout_alignBottom="@+id/jumlahBarangText"
+                android:layout_toEndOf="@+id/jumlahBarangText"
+                android:layout_marginStart="8dp"
+                android:text="@string/stokBarang"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/rupiahText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/materialPrice"
+                android:layout_marginEnd="5dp"
+                android:layout_toStartOf="@+id/materialPrice"
+                android:text="@string/rp"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/materialPrice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/materialQuantity"
+                android:layout_alignBottom="@+id/materialQuantity"
+                android:layout_alignParentEnd="true"
+                android:text="@string/hargaBarang"
+                android:textSize="16sp" />
+
+        </RelativeLayout>
+
+    </android.support.v7.widget.CardView>
+
+</LinearLayout>
