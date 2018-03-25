@@ -25,9 +25,10 @@ public class InventoryAdapter extends RecyclerView.Adapter<InventoryAdapter.View
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        LayoutInflater layoutInflater = LayoutInflater.from(context);
-        View view = layoutInflater.inflate(R.layout.list_inventory_material, parent, false);
+//        LayoutInflater layoutInflater = LayoutInflater.from(context);
+//        View view = layoutInflater.inflate(R.layout.list_inventory_material, parent, false);
 
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_inventory_material, parent, false);
         return new ViewHolder(view); // take data from public ViewHolder(View itemView)
     }
 
@@ -51,15 +52,20 @@ public class InventoryAdapter extends RecyclerView.Adapter<InventoryAdapter.View
 
     public class ViewHolder extends RecyclerView.ViewHolder{
 
-        private TextView namaBarang, kodeBarang, stokBarang, hargaBarang;
+        public TextView namaBarang, kodeBarang, stokBarang, hargaBarang;
+        public TextView stockBarangText, Rp;
 
         public ViewHolder(View itemView) {
             super(itemView);
 
-            namaBarang = itemView.findViewById(R.id.materialName);
-            kodeBarang = itemView.findViewById(R.id.materialCode);
-            stokBarang = itemView.findViewById(R.id.materialQuantity);
-            hargaBarang = itemView.findViewById(R.id.materialPrice);
+            namaBarang = (TextView) itemView.findViewById(R.id.materialName);
+            kodeBarang = (TextView)itemView.findViewById(R.id.materialCode);
+            stokBarang = (TextView)itemView.findViewById(R.id.materialQuantity);
+            hargaBarang = (TextView)itemView.findViewById(R.id.materialPrice);
+
+            stockBarangText = (TextView)itemView.findViewById(R.id.stockBarangText);
+            Rp = (TextView) itemView.findViewById(R.id.rupiahText);
+
         }
     }
 }

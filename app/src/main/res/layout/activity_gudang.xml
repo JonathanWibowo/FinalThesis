@@ -8,6 +8,7 @@
     tools:context="com.thesis.erpmegahjaya.GudangActivity">
 
     <RelativeLayout
+        android:id="@+id/gudangRelativeLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 

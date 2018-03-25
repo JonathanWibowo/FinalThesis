@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -47,6 +48,9 @@ public class GudangActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gudang);
 
+        // Display navigation bar
+        navigationBar();
+
         displayAllMaterial = (TextView) findViewById(R.id.allMaterial);
 
         recyclerView = (RecyclerView) findViewById(R.id.gudangRecyclerView);
@@ -63,9 +67,6 @@ public class GudangActivity extends AppCompatActivity {
 
         adapter = new InventoryAdapter(listMaterialInventories, this);
         recyclerView.setAdapter(adapter);
-
-        // Display navigation bar
-        navigationBar();
 
         // Display whole material
         material();
@@ -124,7 +125,7 @@ public class GudangActivity extends AppCompatActivity {
     }
 
     private void material(){
-        final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 try {
