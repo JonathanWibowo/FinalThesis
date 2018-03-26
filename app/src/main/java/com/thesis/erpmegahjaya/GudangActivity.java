@@ -1,5 +1,6 @@
 package com.thesis.erpmegahjaya;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -9,15 +10,17 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.MenuItem;
-import android.widget.TextView;
+import android.widget.SearchView;
 import android.widget.Toast;
+import android.widget.Toolbar;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.thesis.erpmegahjaya.adapter.InventoryAdapter;
+import com.thesis.erpmegahjaya.singleton.MySingleton;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -40,7 +43,8 @@ public class GudangActivity extends AppCompatActivity {
     // For list of the item
     private List<listMaterialInventory> listMaterialInventories;
 
-    private TextView displayAllMaterial;
+    private SearchView searchMaterial;
+//    private Toolbar toolbar;
     private static final String url = "https://thesisandroid.000webhostapp.com/material/listItem.php";
 
     @Override
@@ -48,28 +52,42 @@ public class GudangActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gudang);
 
+        searchMaterial = findViewById(R.id.gudangSearchView);
+        recyclerView = findViewById(R.id.gudangRecyclerView);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        listMaterialInventories = new ArrayList<>();
+
         // Display navigation bar
         navigationBar();
 
-        displayAllMaterial = (TextView) findViewById(R.id.allMaterial);
-
-        recyclerView = (RecyclerView) findViewById(R.id.gudangRecyclerView);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-        listMaterialInventories = new ArrayList<>();
-
-        // display 25 item
-        for(int x = 0; x < 25; x++){
-            listMaterialInventory listInventory = new listMaterialInventory("Nama Barang", "Kode Barang", 10, 10000);
-            listMaterialInventories.add(listInventory);
-        }
-
-        adapter = new InventoryAdapter(listMaterialInventories, this);
-        recyclerView.setAdapter(adapter);
-
         // Display whole material
         material();
+
+        searchMaterial.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String string) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String string) {
+                string = string.toUpperCase();
+                List<listMaterialInventory> getListInventoryName = new ArrayList<>();
+
+                for(listMaterialInventory listInventory : listMaterialInventories){
+                    String getMaterialName = listInventory.getName().toLowerCase();
+
+                    if(getMaterialName.contains(string)){
+                        getListInventoryName.add(listInventory);
+                    }
+                }
+
+                adapter
+
+                return true;
+            }
+        });
     }
 
     public void navigationBar(){
@@ -125,29 +143,46 @@ public class GudangActivity extends AppCompatActivity {
     }
 
     private void material(){
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                try {
-                    JSONArray jsonArray = response.getJSONArray("material");
+        // Display the loading message
+        final ProgressDialog progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Mengambil barang...");
+        progressDialog.show();
 
-                    for (int x = 0; x < jsonArray.length(); x++){
-                        JSONObject jsonObject = jsonArray.getJSONObject(x);
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        // Remove the loading message when the loading done
+                        progressDialog.dismiss();
+                        try {
+                            JSONArray jsonArray = response.getJSONArray("material");
 
-                        String getMaterialName = jsonObject.getString("name");
-                        String getMaterialCode = jsonObject.getString("itemCode");
-                        int getMaterialQuantity = jsonObject.getInt("quantity");
-                        int getMaterialPrice = jsonObject.getInt("price");
+                            for (int x = 0; x < jsonArray.length(); x++){
+                                JSONObject jsonObject = jsonArray.getJSONObject(x);
 
-                        displayAllMaterial.append(getMaterialName + ", " + getMaterialCode + ", " + getMaterialQuantity + ", " + getMaterialPrice + "\n");
+                                // Get the JSON data & set to list
+                                listMaterialInventory listInventory = new listMaterialInventory(
+                                        jsonObject.getString("name"),
+                                        jsonObject.getString("itemCode"),
+                                        jsonObject.getInt("quantity"),
+                                        jsonObject.getInt("price")
+                                );
+                                listMaterialInventories.add(listInventory);
+                            }
+
+                            // Set the adapter
+                            adapter = new InventoryAdapter(listMaterialInventories, getApplicationContext());
+                            recyclerView.setAdapter(adapter);
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                // Remove the loading message when the loading done
+                progressDialog.dismiss();
                 Toast.makeText(GudangActivity.this, "Tidak ada barang", Toast.LENGTH_LONG).show();
                 error.printStackTrace();
             }

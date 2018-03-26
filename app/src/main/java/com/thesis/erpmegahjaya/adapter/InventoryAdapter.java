@@ -1,4 +1,4 @@
-package com.thesis.erpmegahjaya;
+package com.thesis.erpmegahjaya.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -7,6 +7,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.thesis.erpmegahjaya.R;
+import com.thesis.erpmegahjaya.listMaterialInventory;
+
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -25,10 +29,8 @@ public class InventoryAdapter extends RecyclerView.Adapter<InventoryAdapter.View
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-//        LayoutInflater layoutInflater = LayoutInflater.from(context);
-//        View view = layoutInflater.inflate(R.layout.list_inventory_material, parent, false);
-
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_inventory_material, parent, false);
+        LayoutInflater layoutInflater = LayoutInflater.from(context);
+        View view = layoutInflater.inflate(R.layout.list_inventory_material, parent, false);
         return new ViewHolder(view); // take data from public ViewHolder(View itemView)
     }
 
@@ -40,8 +42,8 @@ public class InventoryAdapter extends RecyclerView.Adapter<InventoryAdapter.View
         // Set the data from class ViewHolder at bottom to here (namaBarang, kodeBarang, stokBarang, hargaBarang)
         holder.namaBarang.setText(listInventory.getName());
         holder.kodeBarang.setText(listInventory.getCode());
-        holder.stokBarang.setText(listInventory.getQuantity());
-        holder.hargaBarang.setText(listInventory.getPrice());
+        holder.stokBarang.setText(String.valueOf(listInventory.getQuantity()));
+        holder.hargaBarang.setText(String.valueOf(listInventory.getPrice()));
     }
 
     // Return the size of the list
@@ -53,7 +55,6 @@ public class InventoryAdapter extends RecyclerView.Adapter<InventoryAdapter.View
     public class ViewHolder extends RecyclerView.ViewHolder{
 
         public TextView namaBarang, kodeBarang, stokBarang, hargaBarang;
-        public TextView stockBarangText, Rp;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -62,10 +63,12 @@ public class InventoryAdapter extends RecyclerView.Adapter<InventoryAdapter.View
             kodeBarang = (TextView)itemView.findViewById(R.id.materialCode);
             stokBarang = (TextView)itemView.findViewById(R.id.materialQuantity);
             hargaBarang = (TextView)itemView.findViewById(R.id.materialPrice);
-
-            stockBarangText = (TextView)itemView.findViewById(R.id.stockBarangText);
-            Rp = (TextView) itemView.findViewById(R.id.rupiahText);
-
         }
+    }
+
+    public void setFilter(List<listMaterialInventory> getListInventoryName){
+        listMaterialInventories = new ArrayList<>();
+        listMaterialInventories.addAll(getListInventoryName);
+        notifyDataSetChanged();
     }
 }

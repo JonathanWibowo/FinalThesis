@@ -1,6 +1,6 @@
 // Source from official android developer website (https://developer.android.com/training/volley/requestqueue.html)
 
-package com.thesis.erpmegahjaya;
+package com.thesis.erpmegahjaya.singleton;
 
 import android.content.Context;
 import android.graphics.Bitmap;

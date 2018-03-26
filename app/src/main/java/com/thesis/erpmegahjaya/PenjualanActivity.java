@@ -19,6 +19,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.thesis.erpmegahjaya.singleton.MySingleton;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -26,7 +27,6 @@ import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.util.HashMap;
 
 public class PenjualanActivity extends AppCompatActivity {
 
@@ -158,21 +158,6 @@ public class PenjualanActivity extends AppCompatActivity {
 
                                 displayName.append(getMaterialName + ", " + getMaterialCode + ", " + getMaterialQuantity + ", " + getMaterialPrice);
                             }
-//                            for(int x = 0; x < jsonArray.length(); x++){
-//                                JSONObject material = jsonArray.getJSONObject(x);
-//
-//                                String getName = material.getString("name");
-//                                String getItemCode = material.getString("itemCode");
-//                                String getDesc = material.getString("desc");
-//
-//                                if (getBarcodeData.equals(getItemCode)){
-//                                    displayItemName.append(getName + ", " + getItemCode + ", " + getDesc + "\n");
-//                                }
-//                                else{
-//                                    String getFail = material.getString("fail");
-//                                    Toast.makeText(PenjualanActivity.this, getFail, Toast.LENGTH_SHORT).show();
-//                                }
-//                            }
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
