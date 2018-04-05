@@ -14,6 +14,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.thesis.erpmegahjaya.singleton.MySingleton;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
@@ -40,7 +41,7 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View view) {
                 // Check if the field is empty or no
                 if(uField.getText().toString().equals("") || pField.getText().toString().equals("")){
-                    Toast.makeText(LoginActivity.this, "Username dan Password wajib diisi.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, "Username dan Password wajib diisi", Toast.LENGTH_SHORT).show();
                 }
                 else{
                     login();
@@ -69,7 +70,22 @@ public class LoginActivity extends AppCompatActivity {
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        startActivity(new Intent(LoginActivity.this, PenjualanActivity.class));
+                        try {
+                            Boolean getStatus = response.getBoolean("status");
+
+                            if(getStatus){
+                                startActivity(new Intent(LoginActivity.this, PenjualanActivity.class));
+                            }
+                            else{
+                                Toast.makeText(LoginActivity.this, "Username dan Password Salah", Toast.LENGTH_SHORT).show();
+
+                                // Make the field empty
+                                uField.setText("");
+                                pField.setText("");
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
                 }, new Response.ErrorListener() {
             @Override

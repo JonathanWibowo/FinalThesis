@@ -109,6 +109,7 @@ public class ScanActivity extends AppCompatActivity implements ZXingScannerView.
 
     @Override
     public void handleResult(Result result) {
+        // Get scanned value and bring the scanned value to previous activity
         Intent intent = new Intent(ScanActivity.this, PenjualanActivity.class);
         intent.putExtra("scannedBarcode", String.valueOf(result));
         setResult(RESULT_OK, intent);

@@ -58,11 +58,6 @@ public class HistoriPenjualanActivity extends AppCompatActivity {
                         Intent gudang = new Intent(getApplicationContext(), GudangActivity.class);
                         startActivity(gudang);
                         break;
-
-                    case R.id.barangBaruMenu:
-//                        Intent barangBaru = new Intent(PenjualanActivity.this, );
-//                        startActivity(barangBaru);
-                        break;
                 }
 
                 return false;

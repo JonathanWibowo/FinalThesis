@@ -1,5 +1,6 @@
 package com.thesis.erpmegahjaya;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -41,7 +42,6 @@ public class PenjualanActivity extends AppCompatActivity {
     private TextView displayName;
     private Button scanBtn, data, btn;
     private final int GET_BARCODE = 0;
-//    private static final String url = "http://192.168.100.2/thesis_test/listMaterial/getItem.php";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +50,7 @@ public class PenjualanActivity extends AppCompatActivity {
 
         navigationBar();
 
-        recyclerView = findViewById(R.id.penjualanRecyclerView);
+        recyclerView = (RecyclerView) findViewById(R.id.penjualanRecyclerView);
         displayName = (TextView) findViewById(R.id.nameText);
         scanBtn = (Button) findViewById(R.id.barcodeScanner);
         data = (Button) findViewById(R.id.getData);
@@ -62,13 +62,6 @@ public class PenjualanActivity extends AppCompatActivity {
                 startActivityForResult(new Intent(PenjualanActivity.this, ScanActivity.class), GET_BARCODE);
             }
         });
-
-//        data.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                parseJSON();
-//            }
-//        });
 
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -109,11 +102,6 @@ public class PenjualanActivity extends AppCompatActivity {
                         Intent gudang = new Intent(getApplicationContext(), GudangActivity.class);
                         startActivity(gudang);
                         break;
-
-                    case R.id.barangBaruMenu:
-//                        Intent barangBaru = new Intent(PenjualanActivity.this, );
-//                        startActivity(barangBaru);
-                        break;
                 }
 
                 return false;
@@ -121,6 +109,7 @@ public class PenjualanActivity extends AppCompatActivity {
         });
     }
 
+    // Make the sidebar menu icon clickable
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if(actionBarDrawerToggle.onOptionsItemSelected(item)){
@@ -133,18 +122,21 @@ public class PenjualanActivity extends AppCompatActivity {
     private void parseJSON(String getBarcodeData){
         String url = "";
         try {
-            url = "https://thesisandroid.000webhostapp.com/material/getItem.php?itemCode=" + URLEncoder.encode(getBarcodeData, "UTF-8");
+            url = "https://thesisandroid.000webhostapp.com/material/getMaterial.php?itemCode=" + URLEncoder.encode(getBarcodeData, "UTF-8");
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
-            // Kasih notification
             return;
         }
+
+        final ProgressDialog progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Mengambil barang...");
+        progressDialog.show();
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        Log.i("CHECK", response.toString());
+                        progressDialog.dismiss();
                         try {
                             JSONArray jsonArray = response.getJSONArray("material");
 
@@ -165,8 +157,8 @@ public class PenjualanActivity extends AppCompatActivity {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.i("QWERTYUIOP LMAO LMAO", error.toString());
-                Toast.makeText(PenjualanActivity.this, error.toString(), Toast.LENGTH_LONG).show();
+                Log.i("ERROR", error.toString());
+                Toast.makeText(PenjualanActivity.this, error.toString() /*Barang tidak ditemukan*/, Toast.LENGTH_LONG).show();
                 error.printStackTrace();
             }
         });
@@ -180,10 +172,7 @@ public class PenjualanActivity extends AppCompatActivity {
 
         if(requestCode == GET_BARCODE && resultCode == RESULT_OK){
             String getBarcodeData = data.getStringExtra("scannedBarcode");
-//            barcodeData = getBarcodeData;
-
             parseJSON(getBarcodeData);
-//            displayItemName.setText(barcodeData);
         }
     }
 }
