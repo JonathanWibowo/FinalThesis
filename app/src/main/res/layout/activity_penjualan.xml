@@ -2,65 +2,62 @@
 <android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/penjualanLayout"
+    android:id="@+id/penjualanDrawerLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.thesis.erpmegahjaya.PenjualanActivity">
+    tools:context=".Penjualan.PenjualanActivity">
 
-    <!--Contain the content below navigation menu-->
     <RelativeLayout
+        android:id="@+id/penjualanRelativeLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-
-        <Button
-            android:id="@+id/barcodeScanner"
-            android:layout_width="wrap_content"
+        <SearchView
+            android:id="@+id/penjualanSearchView"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="73dp"
-            android:text="@string/scan" />
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true" />
 
-        <!-- Recycler View -->
         <android.support.v7.widget.RecyclerView
             android:id="@+id/penjualanRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
-            android:layout_below="@+id/nameText"
-            android:layout_marginTop="30dp" />
+            android:layout_below="@+id/penjualanSearchView"
+            android:scrollbars="vertical" />
+
+        <Button
+            android:id="@+id/scanButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/nextButton"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="30dp"
+            android:text="@string/scan" />
+
+        <Button
+            android:id="@+id/nextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:text="@string/lanjut" />
 
         <TextView
-            android:id="@+id/nameText"
+            android:id="@+id/displayName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
+            android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:text="@string/textview"
-            android:textSize="20sp" />
-
-        <Button
-            android:id="@+id/getData"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignStart="@+id/barcodeScanner"
-            android:text="@string/data" />
-
-        <Button
-            android:id="@+id/button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentStart="true"
-            android:text="@string/button" />
+            android:layout_marginBottom="219dp"
+            android:text="@string/app_name" />
 
     </RelativeLayout>
 
     <!-- Show navigation menu -->
     <android.support.design.widget.NavigationView
-        android:id="@+id/navPenjualan"
+        android:id="@+id/penjualanNavigationMenu"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"

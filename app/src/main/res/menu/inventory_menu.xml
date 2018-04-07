@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/addNewMaterial"
+        android:title="@string/tambahBarangBaru" />
+
+    <item android:id="@+id/addMaterialQuantity"
+        android:title="@string/tambahJumlahBarang" />
+
+    <item android:id="@+id/editMaterial"
+        android:title="@string/ubahDataBarang" />
+
+    <item android:id="@+id/removeMaterial"
+        android:title="@string/hapusBarang" />
+</menu>

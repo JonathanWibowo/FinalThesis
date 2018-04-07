@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.thesis.erpmegahjaya">
+    package="com.thesis.megahjaya">
 
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -22,14 +22,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".PenjualanActivity" />
-        <activity android:name=".ScanActivity" />
+        <activity android:name=".Penjualan.PenjualanActivity" />
+        <activity android:name=".Gudang.GudangActivity" />
         <activity
-            android:name=".PenjualanInfoActivity"
-            android:parentActivityName=".PenjualanActivity" />
-        <activity android:name=".ResultActivity" />
-        <activity android:name=".HistoriPenjualanActivity" />
-        <activity android:name=".GudangActivity"></activity>
+            android:name=".Gudang.DetailInventoryActivity"
+            android:parentActivityName=".Gudang.GudangActivity" />
+        <activity android:name=".Penjualan.ScanActivity" />
+        <activity android:name=".Gudang.AddNewMaterial.AddNewMaterialActivity"
+            android:parentActivityName=".Gudang.GudangActivity"></activity>
     </application>
 
 </manifest>

@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:background="@drawable/list_layout">
+
+
+            <TextView
+                android:id="@+id/penjualanMaterialName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/materialName"
+                android:textAllCaps="true"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/penjualanMaterialCode"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/penjualanMaterialName"
+                android:layout_marginTop="8dp"
+                android:text="@string/materialCode"
+                android:textAllCaps="true"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/penjualanMaterialDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/penjualanMaterialCode"
+                android:layout_marginTop="8dp"
+                android:text="@string/materialDesc"
+                android:textAllCaps="true"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/penjualanGroupText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/penjualanMaterialDescription"
+                android:layout_marginTop="8dp"
+                android:text="@string/groupText"
+                android:textAllCaps="true"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/penjualanMaterialGroup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/penjualanGroupText"
+                android:layout_toEndOf="@id/penjualanGroupText"
+                android:layout_marginStart="8dp"
+                android:text="@string/materialGroup"
+                android:textAllCaps="true"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/penjualanJumlahText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/penjualanGroupText"
+                android:layout_marginTop="20dp"
+                android:text="@string/jumlah"
+                android:textAllCaps="true"
+                android:textSize="16sp" />
+
+            <EditText
+                android:id="@+id/penjualanMaterialCustomerQuantity"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_alignBaseline="@+id/penjualanJumlahText"
+                android:layout_marginStart="8dp"
+                android:layout_toEndOf="@id/penjualanJumlahText"
+                android:ems="4"
+                android:hint="@string/materialQuantity"
+                android:inputType="number"
+                android:labelFor="@id/penjualanJumlahText" />
+
+            <TextView
+                android:id="@+id/penjualanMaterialPrice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/penjualanMaterialCustomerQuantity"
+                android:layout_alignBottom="@+id/penjualanMaterialCustomerQuantity"
+                android:layout_alignParentEnd="true"
+                android:text="@string/materialPrice"
+                android:textSize="16sp" />
+
+        </RelativeLayout>
+
+    </android.support.v7.widget.CardView>
+
+</LinearLayout>
