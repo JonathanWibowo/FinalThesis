@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:paddingLeft="10dp"
     android:paddingRight="10dp"
-    tools:context=".Gudang.DetailInventoryActivity">
+    tools:context=".Gudang.Detail.DetailInventoryActivity">
 
 
     <TextView
@@ -48,7 +48,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/detailMaterialDescription"
-        android:layout_marginStart="105dp"
+        android:layout_marginStart="100dp"
         android:layout_marginTop="20dp"
         android:text="@string/groupText"
         android:textAllCaps="true"
@@ -70,7 +70,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/detailMaterialGroup"
-        android:layout_marginStart="75dp"
+        android:layout_marginStart="60dp"
         android:layout_marginTop="20dp"
         android:text="@string/jumlahBarangText"
         android:textAllCaps="true"
@@ -91,7 +91,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/detailJumlahBarangText"
-        android:layout_marginStart="75dp"
+        android:layout_marginStart="60dp"
         android:layout_marginTop="20dp"
         android:text="@string/hargaBarangText"
         android:textAllCaps="true"

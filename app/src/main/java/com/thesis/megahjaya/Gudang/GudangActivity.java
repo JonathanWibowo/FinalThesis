@@ -14,6 +14,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.SearchView;
 import android.widget.Toast;
 
@@ -22,8 +24,12 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.thesis.megahjaya.Gudang.Adapter.InventoryAdapter;
+import com.thesis.megahjaya.Gudang.AddNewMaterial.AddNewMaterialActivity;
+import com.thesis.megahjaya.Gudang.AddNewMaterial.SuccessAddNewActivity;
+import com.thesis.megahjaya.Histori_Penjualan.HistoriPenjualanActivity;
 import com.thesis.megahjaya.Penjualan.PenjualanActivity;
 import com.thesis.megahjaya.R;
+import com.thesis.megahjaya.pagination.prevNextPagination;
 import com.thesis.megahjaya.singleton.Singleton;
 
 import org.json.JSONArray;
@@ -37,23 +43,43 @@ public class GudangActivity extends AppCompatActivity {
 
     // For navigation bar
     private DrawerLayout drawerLayout;
-    private ActionBarDrawerToggle actionBarDrawerToggle;
     private NavigationView navigationView;
+    private ActionBarDrawerToggle actionBarDrawerToggle;
 
     // For recycler view
     private RecyclerView recyclerView;
     private InventoryAdapter inventoryAdapter;
 
     // For list of the item
-    private List<ListMaterialInventory> listMaterialInventories;
+    private ArrayList<ListMaterialInventory> listMaterialInventories;
 
+    // For pagination
+    prevNextPagination prevNextPaginationInventory = new prevNextPagination();
+    private int currentPage = 0;
+    private int totalPage = prevNextPaginationInventory.TOTAL_MATERIAL/prevNextPaginationInventory.LIST_MATERIAL_PER_PAGE;
+
+    public int TOTAL_MATERIAL;
+    public static final int LIST_MATERIAL_PER_PAGE = 25;
+    public int REMAINING_MATERIAL = TOTAL_MATERIAL % LIST_MATERIAL_PER_PAGE;
+    public int LAST_PAGE = TOTAL_MATERIAL / LIST_MATERIAL_PER_PAGE;
+    private Button prev,next;
+
+
+
+    // For search item
     private SearchView searchMaterial;
+
     private static final String url = "https://thesisandroid.000webhostapp.com/material/listMaterial.php";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gudang);
+
+        // Pagination
+        prev = (Button) findViewById(R.id.previousBtn);
+        next = (Button) findViewById(R.id.nextBtn);
+        prev.setEnabled(false); // make the button cannot be click because user will visit the first pagination for inventory page
 
         searchMaterial = (SearchView) findViewById(R.id.gudangSearchView);
         recyclerView = (RecyclerView) findViewById(R.id.gudangRecyclerView);
@@ -64,11 +90,14 @@ public class GudangActivity extends AppCompatActivity {
         // Display navigation bar
         navigationBar();
 
-//         Search View function
+        // Search View function
         search();
 
         // Display whole material
         material();
+
+        // Set the click listener for pagination
+        paginationButton();
     }
 
     public void navigationBar(){
@@ -91,10 +120,10 @@ public class GudangActivity extends AppCompatActivity {
                         startActivity(penjualan);
                         break;
 
-//                    case R.id.historiPenjualanMenu:
-//                        Intent historiPenjualan = new Intent(getApplicationContext(), HistoriPenjualanActivity.class);
-//                        startActivity(historiPenjualan);
-//                        break;
+                    case R.id.historiPenjualanMenu:
+                        Intent historiPenjualan = new Intent(getApplicationContext(), HistoriPenjualanActivity.class);
+                        startActivity(historiPenjualan);
+                        break;
 
                     case R.id.gudangMenu:
                         Intent gudang = new Intent(getApplicationContext(), GudangActivity.class);
@@ -119,6 +148,18 @@ public class GudangActivity extends AppCompatActivity {
     // Make the sidebar menu icon clickable
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        // For the inventory menu (not the navigation bar menu)
+        switch (item.getItemId()){
+            case R.id.addNewMaterial:
+                Intent addNewMaterialIntent = new Intent(getApplicationContext(), AddNewMaterialActivity.class);
+                startActivity(addNewMaterialIntent);
+                break;
+            case R.id.addMaterialQuantity:
+                Intent intent = new Intent(getApplicationContext(), SuccessAddNewActivity.class);
+                startActivity(intent);
+                break;
+        }
+
         if(actionBarDrawerToggle.onOptionsItemSelected(item)){
             return true;
         }
@@ -135,7 +176,7 @@ public class GudangActivity extends AppCompatActivity {
 
             @Override
             public boolean onQueryTextChange(String string) {
-                List<ListMaterialInventory> getListInventoryName = new ArrayList<>();
+                ArrayList<ListMaterialInventory> getListInventoryName = new ArrayList<>();
 
                 for(ListMaterialInventory listInventory : listMaterialInventories){
                     String getMaterialName = listInventory.getName().toLowerCase();
@@ -156,6 +197,7 @@ public class GudangActivity extends AppCompatActivity {
         // Display the loading message
         final ProgressDialog progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Mengambil barang...");
+        progressDialog.setCanceledOnTouchOutside(false);
         progressDialog.show();
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null,
@@ -166,6 +208,10 @@ public class GudangActivity extends AppCompatActivity {
                         progressDialog.dismiss();
                         try {
                             JSONArray jsonArray = response.getJSONArray("material");
+
+                            // get length for calculate the total data available for pagination
+//                            TOTAL_MATERIAL = jsonArray.length();
+//                            Log.i("TOTAL MATERIAL", String.valueOf(jsonArray.length()));
 
                             for (int x = 0; x < jsonArray.length(); x++){
                                 JSONObject jsonObject = jsonArray.getJSONObject(x);
@@ -187,7 +233,6 @@ public class GudangActivity extends AppCompatActivity {
                             recyclerView.setAdapter(inventoryAdapter);
 
                         } catch (JSONException e) {
-                            Log.i("ERROR", e.toString());
                             e.printStackTrace();
                         }
                     }
@@ -196,10 +241,48 @@ public class GudangActivity extends AppCompatActivity {
             public void onErrorResponse(VolleyError error) {
                 // Remove the loading message when the loading done
                 progressDialog.dismiss();
-                Toast.makeText(GudangActivity.this, "Tidak ada barang", Toast.LENGTH_LONG).show();
-                error.printStackTrace();
+
+                // get not found status
+                if(error.networkResponse != null && error.networkResponse.statusCode == 404){
+                    Toast.makeText(GudangActivity.this, "Tidak ada barang", Toast.LENGTH_LONG).show();
+                    error.printStackTrace();
+                }
             }
         });
         Singleton.getInstance(this).addToRequestQueue(jsonObjectRequest);
+    }
+
+    public void paginationButton(){
+        prev.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        next.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                currentPage++;
+            }
+        });
+    }
+
+    private void setButtonSetting(){
+        // Reaching the end of the page
+        if(currentPage == totalPage){
+            prev.setEnabled(true);
+            next.setEnabled(false);
+        }
+        // Reaching the first page
+        else if(currentPage == 0){
+            prev.setEnabled(false);
+            next.setEnabled(true);
+        }
+        // Reaching currentPage > 1 & < end
+        else{
+            prev.setEnabled(true);
+            next.setEnabled(true);
+        }
     }
 }

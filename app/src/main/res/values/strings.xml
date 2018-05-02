@@ -12,6 +12,7 @@
     <string name="tambahJumlahBarang">Tambah Jumlah Barang</string>
     <string name="ubahDataBarang">Ubah Data Barang</string>
     <string name="hapusBarang">Hapus Barang</string>
+    <string name="keluar">Keluar</string>
     <!-- Menu -->
     <!-- Button -->
     <string name="lanjut">Lanjut</string>
@@ -19,15 +20,32 @@
     <string name="scan">Scan</string>
     <string name="ubah">Ubah</string>
     <string name="tambahBarang">Tambah Barang</string>
+    <string name="save">Simpan</string>
+    <string name="prev">Sebelumnya</string>
+    <string name="next">Selanjutnya</string>
+    <string name="ambil">Ambil</string>
     <!-- Button -->
     <!-- Penjualan -->
+    <string name="kosong">Tidak ada permintaan barang dari pembeli</string>
     <string name="cariBarang">Cari Barang</string>
     <string name="jumlah">Jumlah: </string>
     <!-- Penjualan -->
+    <!-- Penjualan Info -->
+    <string name="tipeBon">Tipe Bon:</string>
+    <string-array name="listBon">
+        <item>Bon 1</item>
+        <item>Bon 2</item>
+        <item>Bon 3</item>
+    </string-array>
+    <!-- Penjualan Info -->
+    <!-- Histori Penjualan -->
+    <string name="customerName">Nama Pembeli</string>
+    <string name="keteranganText">Keterangan:</string>
+    <!-- Histori Penjualan -->
     <!-- Gudang -->
     <string name="materialName">Nama Barang</string>
     <string name="materialCode">Kode Barang</string>
-    <string name="materialDesc">deskripsi</string>
+    <string name="materialDesc">Deskripsi</string>
     <string name="groupText">Group: </string>
     <string name="materialGroup">Nama_Group</string>
     <string name="jumlahBarangText">Jumlah Barang: </string>
@@ -49,10 +67,14 @@
     <string name="materialGroupPlaceholder">Besi/Cat/Keni/Pipa/Triplek/dll...</string>
     <string name="materialQuantityPlaceholder">20/50/120/180/...</string>
     <string name="materialPricePlaceholder">12000/25000/68000/...</string>
+    <string name="successAddNewMaterial"></string>
     <!-- Tambah Barang Baru -->
     <!-- Others -->
     <string name="open">Open</string>
     <string name="close">Close</string>
     <string name="button">button</string>
+    <string name="delete">delete</string>
+    <string name="todo">TODO</string>
+    <string name="pageNumber">1</string>
     <!-- Others -->
 </resources>

@@ -8,7 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.thesis.megahjaya.Gudang.DetailInventoryActivity;
+import com.thesis.megahjaya.Gudang.Detail.DetailInventoryActivity;
 import com.thesis.megahjaya.Gudang.ListMaterialInventory;
 import com.thesis.megahjaya.R;
 
@@ -21,15 +21,16 @@ import java.util.List;
 
 public class InventoryAdapter extends RecyclerView.Adapter<InventoryAdapter.ViewHolder>{
 
-    private List<ListMaterialInventory> listMaterialInventories;
+    private ArrayList<ListMaterialInventory> listMaterialInventories;
     private Context context;
 
     // Constructor
-    public InventoryAdapter(List<ListMaterialInventory> listMaterialInventories, Context context) {
+    public InventoryAdapter(ArrayList<ListMaterialInventory> listMaterialInventories, Context context) {
         this.listMaterialInventories = listMaterialInventories;
         this.context = context;
     }
 
+    // Create the list based from list_material_inventoy layout
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(context);
@@ -43,11 +44,11 @@ public class InventoryAdapter extends RecyclerView.Adapter<InventoryAdapter.View
         ListMaterialInventory listInventory = listMaterialInventories.get(position);
 
         // Set the data from class ViewHolder at bottom to here (namaBarang, kodeBarang, stokBarang, hargaBarang)
-        holder.namaBarang.setText(listInventory.getName());
-        holder.kodeBarang.setText(listInventory.getCode());
-        holder.grupBarang.setText(listInventory.getGroup());
-        holder.jumlahBarang.setText(String.valueOf(listInventory.getQuantity()));
-        holder.hargaBarang.setText(String.valueOf(listInventory.getPrice()));
+        holder.namaBarangInventory.setText(listInventory.getName());
+        holder.kodeBarangInventory.setText(listInventory.getCode());
+        holder.grupBarangInventory.setText(listInventory.getGroup());
+        holder.jumlahBarangInventory.setText(String.valueOf(listInventory.getQuantity()));
+        holder.hargaBarangInventory.setText(String.valueOf(listInventory.getPrice()));
     }
 
     @Override
@@ -59,11 +60,11 @@ public class InventoryAdapter extends RecyclerView.Adapter<InventoryAdapter.View
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         public Context context;
-        public TextView namaBarang, kodeBarang, grupBarang, jumlahBarang, hargaBarang;
-        public List<ListMaterialInventory> listMaterialInventories;
+        public TextView namaBarangInventory, kodeBarangInventory, grupBarangInventory, jumlahBarangInventory, hargaBarangInventory;
+        public ArrayList<ListMaterialInventory> listMaterialInventories;
 
         // Constructor
-        public ViewHolder(View itemView, List<ListMaterialInventory> listMaterialInventories, Context context) {
+        public ViewHolder(View itemView, ArrayList<ListMaterialInventory> listMaterialInventories, Context context) {
             super(itemView);
 
             this.listMaterialInventories = listMaterialInventories;
@@ -72,11 +73,11 @@ public class InventoryAdapter extends RecyclerView.Adapter<InventoryAdapter.View
             // Register the onclicklistener
             itemView.setOnClickListener(this);
 
-            namaBarang = (TextView) itemView.findViewById(R.id.inventoryMaterialName);
-            kodeBarang = (TextView) itemView.findViewById(R.id.inventoryMaterialCode);
-            grupBarang = (TextView) itemView.findViewById(R.id.inventoryMaterialGroup);
-            jumlahBarang = (TextView) itemView.findViewById(R.id.inventoryMaterialQuantity);
-            hargaBarang = (TextView) itemView.findViewById(R.id.inventoryMaterialPrice);
+            namaBarangInventory = (TextView) itemView.findViewById(R.id.inventoryMaterialName);
+            kodeBarangInventory = (TextView) itemView.findViewById(R.id.inventoryMaterialCode);
+            grupBarangInventory = (TextView) itemView.findViewById(R.id.inventoryMaterialGroup);
+            jumlahBarangInventory = (TextView) itemView.findViewById(R.id.inventoryMaterialQuantity);
+            hargaBarangInventory = (TextView) itemView.findViewById(R.id.inventoryMaterialPrice);
         }
 
         // Creating on click for popup window
@@ -91,15 +92,15 @@ public class InventoryAdapter extends RecyclerView.Adapter<InventoryAdapter.View
             intent.putExtra("detailMaterialCode", listInventory.getCode());
             intent.putExtra("detailMaterialDescription", listInventory.getDescription());
             intent.putExtra("detailMaterialGroup", listInventory.getGroup());
-            intent.putExtra("detailMaterialQuantity", listInventory.getQuantity());
-            intent.putExtra("detailMaterialPrice", listInventory.getPrice());
+            intent.putExtra("detailMaterialQuantity", String.valueOf(listInventory.getQuantity()));
+            intent.putExtra("detailMaterialPrice", String.valueOf(listInventory.getPrice()));
 
             this.context.startActivity(intent);
         }
     }
 
     // For set filter function
-    public void setFilter(List<ListMaterialInventory> getListInventoryName){
+    public void setFilter(ArrayList<ListMaterialInventory> getListInventoryName){
         listMaterialInventories = new ArrayList<>();
         listMaterialInventories.addAll(getListInventoryName); //Give full name result for search view even if the word is incomplete
         notifyDataSetChanged();

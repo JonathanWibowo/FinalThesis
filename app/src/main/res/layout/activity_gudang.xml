@@ -22,10 +22,47 @@
         <android.support.v7.widget.RecyclerView
             android:id="@+id/gudangRecyclerView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="405dp"
+            android:layout_alignEnd="@id/gudangLinearLayout"
             android:layout_alignParentStart="true"
             android:layout_below="@+id/gudangSearchView"
             android:scrollbars="vertical" />
+
+        <LinearLayout
+            android:id="@+id/gudangLinearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@id/gudangRecyclerView"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:paddingTop="10dp"
+            android:paddingBottom="5dp">
+
+            <Button
+                android:id="@+id/previousBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/prev" />
+
+            <TextView
+                android:id="@+id/gudangPageNumber"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/pageNumber"
+                android:textSize="20sp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"/>
+
+            <Button
+                android:id="@+id/nextBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/next" />
+
+        </LinearLayout>
 
     </RelativeLayout>
 

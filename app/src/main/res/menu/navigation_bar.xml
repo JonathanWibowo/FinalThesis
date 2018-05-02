@@ -10,4 +10,6 @@
         <item android:id="@+id/gudangMenu"
             android:title="@string/gudang" />
     </group>
+    <item android:id="@+id/logoutMenu"
+        android:title="@string/keluar" />
 </menu>

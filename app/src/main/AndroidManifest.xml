@@ -25,11 +25,20 @@
         <activity android:name=".Penjualan.PenjualanActivity" />
         <activity android:name=".Gudang.GudangActivity" />
         <activity
-            android:name=".Gudang.DetailInventoryActivity"
+            android:name=".Gudang.Detail.DetailInventoryActivity"
             android:parentActivityName=".Gudang.GudangActivity" />
         <activity android:name=".Penjualan.ScanActivity" />
-        <activity android:name=".Gudang.AddNewMaterial.AddNewMaterialActivity"
-            android:parentActivityName=".Gudang.GudangActivity"></activity>
+        <activity
+            android:name=".Gudang.AddNewMaterial.AddNewMaterialActivity"
+            android:parentActivityName=".Gudang.GudangActivity" />
+        <activity android:name=".Histori_Penjualan.HistoriPenjualanActivity" />
+        <activity android:name=".Penjualan.PenjualanSearchActivity" />
+        <activity android:name=".Gudang.AddNewMaterial.SuccessAddNewActivity" />
+        <activity
+            android:name=".Penjualan.PenjualanInfoActivity"
+            android:parentActivityName=".Penjualan.PenjualanActivity" />
+        <activity android:name=".NavigationMenuActivity" />
+        <activity android:name=".Penjualan.Search.SearchResultActivity"></activity>
     </application>
 
 </manifest>

@@ -11,6 +11,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.thesis.megahjaya.R;
+import com.thesis.megahjaya.singleton.Singleton;
 
 import org.json.JSONObject;
 
@@ -27,6 +28,8 @@ public class AddNewMaterialActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_new_material);
+
+        getSupportActionBar().setTitle("Tambah Barang Baru"); // Give title to current navigation bar
 
         newName = (EditText) findViewById(R.id.addNewMaterialName);
         newCode = (EditText) findViewById(R.id.addNewMaterialCode);
@@ -50,11 +53,11 @@ public class AddNewMaterialActivity extends AppCompatActivity {
                 price = Integer.parseInt(newPrice.getText().toString());
 
                 // Get data from user input
-                HashMap<String,String> hashMap = new HashMap<>();
+                HashMap<String, String> hashMap = new HashMap<>();
                 hashMap.put("name", name);
                 hashMap.put("itemCode", code);
                 hashMap.put("desc", desc);
-//                hashMap.put("group"), group);
+//                hashMap.put("group", group);
 //                hashMap.put("quantity", quantity);
 
 

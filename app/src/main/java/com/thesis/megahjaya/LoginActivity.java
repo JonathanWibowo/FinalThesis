@@ -1,8 +1,12 @@
 package com.thesis.megahjaya;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -22,9 +26,15 @@ import java.util.HashMap;
 
 public class LoginActivity extends AppCompatActivity {
 
+    // Session
+    SharedPreferences sharedPreferences;
+    SharedPreferences.Editor editor;
+
     private EditText uField, pField;
     private Button login, button;
-    private static final String url = "https://thesisandroid.000webhostapp.com/account/login.php";
+
+    // Url
+    private static final String url = "https://thesisandroid.000webhostapp.com/account/login2.php";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,17 +81,14 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(JSONObject response) {
                         try {
-                            Boolean getStatus = response.getBoolean("status");
+                            Integer getResponseCode = response.getInt("status");
+                            String getToken = response.getString("token");
 
-                            if(getStatus){
+                            // get OK status
+                            if(getResponseCode == 200){
+                                loginSession(getToken);
+
                                 startActivity(new Intent(LoginActivity.this, PenjualanActivity.class));
-                            }
-                            else{
-                                Toast.makeText(LoginActivity.this, "Username dan Password Salah", Toast.LENGTH_SHORT).show();
-
-                                // Make the field empty
-                                uField.setText("");
-                                pField.setText("");
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -90,9 +97,17 @@ public class LoginActivity extends AppCompatActivity {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                // User error
+                // get bad request status
                 if(error.networkResponse != null && error.networkResponse.statusCode == 400){
                     Toast.makeText(LoginActivity.this, "Username dan Password Salah", Toast.LENGTH_SHORT).show();
+
+                    // Make the field empty
+                    uField.setText("");
+                    pField.setText("");
+                }
+                // get not found status
+                if(error.networkResponse != null && error.networkResponse.statusCode == 404){
+                    Toast.makeText(LoginActivity.this, "Username tidak ditemukan", Toast.LENGTH_LONG).show();
 
                     // Make the field empty
                     uField.setText("");
@@ -101,5 +116,12 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
         Singleton.getInstance(this).addToRequestQueue(jsonObjectRequest);
+    }
+
+    public void loginSession(String getToken){
+        sharedPreferences = getSharedPreferences("session", Context.MODE_PRIVATE);
+        editor = sharedPreferences.edit();
+        editor.putString("token", getToken);
+        editor.commit();
     }
 }
