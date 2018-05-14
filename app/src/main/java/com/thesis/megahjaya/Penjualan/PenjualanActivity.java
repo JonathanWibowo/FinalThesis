@@ -17,7 +17,9 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,6 +30,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.thesis.megahjaya.Gudang.GudangActivity;
 import com.thesis.megahjaya.Histori_Penjualan.HistoriPenjualanActivity;
+import com.thesis.megahjaya.LoginActivity;
 import com.thesis.megahjaya.Penjualan.Adapter.PenjualanAdapter;
 import com.thesis.megahjaya.R;
 import com.thesis.megahjaya.singleton.Singleton;
@@ -39,8 +42,10 @@ import org.w3c.dom.Text;
 
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Array;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class PenjualanActivity extends AppCompatActivity {
@@ -58,8 +63,17 @@ public class PenjualanActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private PenjualanAdapter penjualanAdapter;
 
-    // For list item
-    ArrayList<ListMaterialPenjualan> listMaterialPenjualans;
+    // For list item (view data)
+    private ArrayList<ListMaterialPenjualan> listMaterialPenjualanArrayList;
+
+    // For list penjualan customer (save data)
+    private Penjualan penjualan;
+    private ArrayList<Penjualan> penjualanArrayList;
+
+    // For calculate total unit price
+    private Integer materialQuantity;
+    private Integer materialPrice;
+    private Integer totalMaterialUnit;
 
     // For search item
     private SearchView searchMaterial;
@@ -67,7 +81,9 @@ public class PenjualanActivity extends AppCompatActivity {
     // For getting value back from barcode scanner process
     private final int GET_BARCODE = 0;
 
-    private TextView empty; // For show message when there is no data displayed
+    int materialQuantityDatabase; // For quantity from database
+    ArrayList<String> materialCodeDatabase = new ArrayList<>(); // For store material code
+
     private Button scan, lanjut;
 
     @Override
@@ -78,15 +94,14 @@ public class PenjualanActivity extends AppCompatActivity {
         // Get session data (token) from login
         getSessionData();
 
-        empty = (TextView) findViewById(R.id.emptyMessage);
         scan = (Button) findViewById(R.id.scanButton);
         lanjut = (Button) findViewById(R.id.nextButton);
-        searchMaterial = (SearchView) findViewById(R.id.penjualanSearchView);
 
         recyclerView = (RecyclerView) findViewById(R.id.penjualanRecyclerView);
+        LinearLayoutManager linearLayoutManagerPenjualan = new LinearLayoutManager(this);
         recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        listMaterialPenjualans = new ArrayList<>();
+        recyclerView.setLayoutManager(linearLayoutManagerPenjualan);
+        listMaterialPenjualanArrayList = new ArrayList<>();
 
         // Display navigation bar
         navigationBar();
@@ -101,12 +116,91 @@ public class PenjualanActivity extends AppCompatActivity {
         lanjut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent sendListMaterial = new Intent(PenjualanActivity.this, PenjualanInfoActivity.class);
-                sendListMaterial.putParcelableArrayListExtra("listMaterial", listMaterialPenjualans);
-//                sendListMaterial.putExtra("listMaterial", listMaterialPenjualans);
-                startActivity(sendListMaterial);
+                processData();
             }
         });
+    }
+
+    // Get session data
+    public void getSessionData(){
+        // get token session
+        sharedPreferences = getSharedPreferences("session", Context.MODE_PRIVATE);
+        String userToken = sharedPreferences.getString("token", "");
+
+        Log.i("GET_SESSION", String.valueOf(sharedPreferences));
+        Log.i("TOKEN", String.valueOf(userToken));
+
+        if(userToken.isEmpty()){
+            startActivity(new Intent(PenjualanActivity.this, LoginActivity.class));
+        }
+    }
+
+    // save the list data to new array list and send to next activity using parcelable
+    private void processData(){
+        penjualanArrayList = new ArrayList<>();
+
+        // get list of viewholder
+        for(int y = 0; y < recyclerView.getChildCount(); y++){
+            PenjualanAdapter.ViewHolder viewHolder = (PenjualanAdapter.ViewHolder) recyclerView.getChildViewHolder(recyclerView.getChildAt(y));
+
+            materialQuantity = Integer.parseInt(viewHolder.jumlahBarangPenjualan.getText().toString());
+            materialPrice = Integer.parseInt(viewHolder.hargaBarangPenjualan.getText().toString());
+
+            totalMaterialUnit = materialQuantity * materialPrice;
+
+            // get all data & move to another array list for parcel
+            penjualan = new Penjualan(
+                    viewHolder.namaBarangPenjualan.getText().toString(),
+                    Integer.parseInt(viewHolder.jumlahBarangPenjualan.getText().toString()),
+                    Integer.parseInt(viewHolder.hargaBarangPenjualan.getText().toString()),
+                    totalMaterialUnit
+            );
+            Log.i("nama_barang", viewHolder.namaBarangPenjualan.toString());
+            Log.i("totalUnitPrice", String.valueOf(totalMaterialUnit));
+
+            penjualanArrayList.add(penjualan);
+        }
+
+        // Send array list to penjualan success page using parcelable
+        Intent sendListMaterialIntent = new Intent(PenjualanActivity.this, PenjualanInfoActivity.class);
+        sendListMaterialIntent.putParcelableArrayListExtra("listMaterial", penjualanArrayList);
+        startActivity(sendListMaterialIntent);
+    }
+
+    // Set search view on toolbar & make search function
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.menu_search, menu);
+
+        MenuItem menuItem = menu.findItem(R.id.menuSearch);
+        SearchView searchView = (SearchView) menuItem.getActionView();
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                ArrayList<ListMaterialPenjualan> getListPenjualanName = new ArrayList<>();
+
+                for(ListMaterialPenjualan listPenjualan : listMaterialPenjualanArrayList){
+                    String getMaterialNamePenjualan = listPenjualan.getName().toLowerCase();
+
+                    if(getMaterialNamePenjualan.contains(newText)){
+                        getListPenjualanName.add(listPenjualan);
+                    }
+                }
+
+                penjualanAdapter.setFilterPenjualan(getListPenjualanName);
+
+                return true;
+            }
+        });
+
+        return super.onCreateOptionsMenu(menu);
     }
 
     public void navigationBar(){
@@ -158,11 +252,25 @@ public class PenjualanActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    // Get barcode data & pass it to function for get the material using captured data
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(requestCode == GET_BARCODE && resultCode == RESULT_OK){
+            String getBarcodeData = data.getStringExtra("scannedBarcode");
+            getMaterialData(getBarcodeData);
+        }
+    }
+
+    // Get material data from database based from scanned code
     private void getMaterialData(String getBarcodeData){
         // Request material data using material code to URL
         String url = "";
         try {
-            url = "https://thesisandroid.000webhostapp.com/material/getMaterial.php?itemCode=" + URLEncoder.encode(getBarcodeData, "UTF-8");
+            String urlMaterialCode = URLEncoder.encode(getBarcodeData, "UTF-8");
+//            materialCodeDatabase.add(urlMaterialCode.toString());
+            url = "https://thesisandroid.000webhostapp.com/material/getMaterial.php?itemCode=" + urlMaterialCode;
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
             return;
@@ -180,38 +288,39 @@ public class PenjualanActivity extends AppCompatActivity {
                     public void onResponse(JSONObject response) {
                         progressDialog.dismiss();
                         try {
-                            JSONArray jsonArray = response.getJSONArray("material");
+                            Integer getResponseCode = response.getInt("status");
 
-                            for (int x = 0; x < jsonArray.length(); x++){
-                                JSONObject insideArray = jsonArray.getJSONObject(x);
+                            // get OK status
+                            if(getResponseCode == 200) {
+                                JSONArray jsonArray = response.getJSONArray("material");
 
-                                // Get the JSON data & add the data to list
-                                ListMaterialPenjualan listPenjualan = new ListMaterialPenjualan(
-                                        insideArray.getString("name"),
-                                        insideArray.getString("itemCode"),
-                                        insideArray.getString("desc"),
-                                        insideArray.getString("group"),
-                                        insideArray.getInt("quantity"),
-                                        insideArray.getInt("price")
-                                );
-                                listMaterialPenjualans.add(listPenjualan);
-                                Log.i("LIST DATA", String.valueOf(listMaterialPenjualans));
+                                for (int x = 0; x < jsonArray.length(); x++) {
+                                    JSONObject insideArray = jsonArray.getJSONObject(x);
+
+                                    // Get the JSON data & add the data to list
+                                    ListMaterialPenjualan listPenjualan = new ListMaterialPenjualan(
+                                            insideArray.getString("name"),
+                                            insideArray.getString("itemCode"),
+                                            insideArray.getString("desc"),
+                                            insideArray.getString("group"),
+                                            insideArray.getInt("quantity"),
+                                            insideArray.getInt("price")
+                                    );
+
+                                    // check if the material code already exist
+//                                    for(int n = 0; n < materialCodeDatabase.size(); n++){
+//                                        if(materialCodeDatabase.contains(listPenjualan.getCode())){
+//                                            Toast.makeText(PenjualanActivity.this, "Barang sudah diambil", Toast.LENGTH_LONG).show();
+//                                        }
+//                                    }
+                                    listMaterialPenjualanArrayList.add(listPenjualan);
+                                }
+
+                                // Set the adapter
+                                penjualanAdapter = new PenjualanAdapter(listMaterialPenjualanArrayList, getApplicationContext());
+                                recyclerView.setAdapter(penjualanAdapter);
+//                                Log.i("MATERIALCODEDATABASE", String.valueOf(materialQuantityDatabase));
                             }
-
-                            // Set the adapter
-                            penjualanAdapter = new PenjualanAdapter(listMaterialPenjualans, getApplicationContext());
-                            recyclerView.setAdapter(penjualanAdapter);
-
-                            // set message
-                            if(listMaterialPenjualans.isEmpty()){
-                                recyclerView.setVisibility(View.GONE);
-                                empty.setVisibility(View.VISIBLE);
-                            }
-                            else{
-                                recyclerView.setVisibility(View.VISIBLE);
-                                empty.setVisibility(View.GONE);
-                            }
-
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -219,6 +328,11 @@ public class PenjualanActivity extends AppCompatActivity {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                // get forbidden result
+                if(error.networkResponse != null && error.networkResponse.statusCode == 403){
+                    startActivity(new Intent(PenjualanActivity.this, LoginActivity.class));
+                }
+                // get not found result
                 if(error.networkResponse != null && error.networkResponse.statusCode == 404){
                     Toast.makeText(PenjualanActivity.this, "Barang tidak ditemukan", Toast.LENGTH_LONG).show();
                     error.printStackTrace();
@@ -226,23 +340,5 @@ public class PenjualanActivity extends AppCompatActivity {
             }
         });
         Singleton.getInstance(this).addToRequestQueue(jsonObjectRequest);
-    }
-
-    // Get barcode data & pass it to function for get the material using captured data
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if(requestCode == GET_BARCODE && resultCode == RESULT_OK){
-            String getBarcodeData = data.getStringExtra("scannedBarcode");
-            getMaterialData(getBarcodeData);
-        }
-    }
-
-    // Get session data
-    public void getSessionData(){
-        // get token session
-        sharedPreferences = getSharedPreferences("session", Context.MODE_PRIVATE);
-        String userToken = sharedPreferences.getString("token", "");
     }
 }

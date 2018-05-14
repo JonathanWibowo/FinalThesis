@@ -4,108 +4,250 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingLeft="10dp"
-    android:paddingRight="10dp"
     tools:context=".Gudang.Detail.DetailInventoryActivity">
 
-
-    <TextView
-        android:id="@+id/detailMaterialName"
+    <LinearLayout
+        android:id="@+id/detailInventoryLinearLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="25dp"
-        android:text="@string/materialName"
-        android:textAlignment="center"
-        android:textAllCaps="true"
-        android:textSize="18sp"
-        android:textStyle="bold" />
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center_horizontal">
 
-    <TextView
-        android:id="@+id/detailMaterialCode"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/detailMaterialName"
-        android:layout_marginTop="20dp"
-        android:text="@string/materialCode"
-        android:textAlignment="center"
-        android:textAllCaps="true"
-        android:textSize="18sp" />
+        <TextView
+            android:id="@+id/detailMaterialName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:text="@string/materialName"
+            android:textAlignment="center"
+            android:textAllCaps="true"
+            android:textSize="18sp"
+            android:textStyle="bold" />
 
-    <TextView
-        android:id="@+id/detailMaterialDescription"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/detailMaterialCode"
-        android:layout_marginTop="20dp"
-        android:textAlignment="center"
-        android:textAllCaps="false"
-        android:textSize="18sp" />
+        <TextView
+            android:id="@+id/detailMaterialCode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="@string/materialCode"
+            android:textAlignment="center"
+            android:textAllCaps="true"
+            android:textSize="18sp" />
 
-    <TextView
-        android:id="@+id/detailGroupText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/detailMaterialDescription"
-        android:layout_marginStart="100dp"
-        android:layout_marginTop="20dp"
-        android:text="@string/groupText"
-        android:textAllCaps="true"
-        android:textSize="18sp" />
+        <TextView
+            android:id="@+id/detailMaterialDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:textAlignment="center"
+            android:textAllCaps="false"
+            android:textSize="18sp" />
 
-    <TextView
-        android:id="@+id/detailMaterialGroup"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@id/detailGroupText"
-        android:layout_marginStart="10dp"
-        android:layout_toEndOf="@id/detailGroupText"
-        android:text="@string/materialGroup"
-        android:textAllCaps="true"
-        android:textSize="18sp" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="20dp"
+            android:paddingLeft="30dp"
+            android:paddingRight="30dp">
 
-    <TextView
-        android:id="@+id/detailJumlahBarangText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/detailMaterialGroup"
-        android:layout_marginStart="60dp"
-        android:layout_marginTop="20dp"
-        android:text="@string/jumlahBarangText"
-        android:textAllCaps="true"
-        android:textSize="18sp" />
+            <TextView
+                android:id="@+id/detailGroupText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/groupText"
+                android:textAllCaps="true"
+                android:textSize="18sp" />
 
-    <TextView
-        android:id="@+id/detailMaterialQuantity"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@id/detailJumlahBarangText"
-        android:layout_marginStart="10dp"
-        android:layout_toEndOf="@id/detailJumlahBarangText"
-        android:text="@string/materialQuantity"
-        android:textSize="18sp" />
+            <TextView
+                android:id="@+id/detailMaterialGroup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:text="@string/materialGroup"
+                android:textAllCaps="true"
+                android:textSize="18sp" />
 
-    <TextView
-        android:id="@+id/detailHargaBarangText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/detailJumlahBarangText"
-        android:layout_marginStart="60dp"
-        android:layout_marginTop="20dp"
-        android:text="@string/hargaBarangText"
-        android:textAllCaps="true"
-        android:textSize="18sp" />
+        </LinearLayout>
 
-    <TextView
-        android:id="@+id/detailMaterialPrice"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@id/detailHargaBarangText"
-        android:layout_marginStart="10dp"
-        android:layout_toEndOf="@id/detailHargaBarangText"
-        android:text="@string/materialPrice"
-        android:textSize="18sp" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="20dp"
+            android:paddingLeft="30dp"
+            android:paddingRight="30dp">
+
+            <TextView
+                android:id="@+id/detailUnitText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/satuanText"
+                android:textAllCaps="true"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/detailMaterialUnit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:text="@string/materialUnit"
+                android:textAllCaps="true"
+                android:textSize="18sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="20dp"
+            android:paddingLeft="30dp"
+            android:paddingRight="30dp">
+
+            <TextView
+                android:id="@+id/detailJumlahBarangText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/jumlahBarangText"
+                android:textAllCaps="true"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/detailMaterialQuantity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:text="@string/materialQuantity"
+                android:textSize="18sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="20dp"
+            android:paddingLeft="30dp"
+            android:paddingRight="30dp">
+
+            <TextView
+                android:id="@+id/detailHargaBarangText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/hargaBarangText"
+                android:textAllCaps="true"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/detailMaterialPrice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:text="@string/materialPrice"
+                android:textSize="18sp" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <!--<TextView-->
+        <!--android:id="@+id/detailMaterialName"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_alignParentTop="true"-->
+        <!--android:layout_centerHorizontal="true"-->
+        <!--android:layout_marginTop="25dp"-->
+        <!--android:text="@string/materialName"-->
+        <!--android:textAlignment="center"-->
+        <!--android:textAllCaps="true"-->
+        <!--android:textSize="18sp"-->
+        <!--android:textStyle="bold" />-->
+
+    <!--<TextView-->
+        <!--android:id="@+id/detailMaterialCode"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_below="@id/detailMaterialName"-->
+        <!--android:layout_marginTop="20dp"-->
+        <!--android:text="@string/materialCode"-->
+        <!--android:textAlignment="center"-->
+        <!--android:textAllCaps="true"-->
+        <!--android:textSize="18sp" />-->
+
+    <!--<TextView-->
+        <!--android:id="@+id/detailMaterialDescription"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_below="@id/detailMaterialCode"-->
+        <!--android:layout_marginTop="20dp"-->
+        <!--android:textAlignment="center"-->
+        <!--android:textAllCaps="false"-->
+        <!--android:textSize="18sp" />-->
+
+    <!--<TextView-->
+        <!--android:id="@+id/detailGroupText"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_below="@id/detailMaterialDescription"-->
+        <!--android:layout_marginStart="100dp"-->
+        <!--android:layout_marginTop="20dp"-->
+        <!--android:text="@string/groupText"-->
+        <!--android:textAllCaps="true"-->
+        <!--android:textSize="18sp" />-->
+
+    <!--<TextView-->
+        <!--android:id="@+id/detailMaterialGroup"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_alignBaseline="@id/detailGroupText"-->
+        <!--android:layout_marginStart="10dp"-->
+        <!--android:layout_toEndOf="@id/detailGroupText"-->
+        <!--android:text="@string/materialGroup"-->
+        <!--android:textAllCaps="true"-->
+        <!--android:textSize="18sp" />-->
+
+    <!--<TextView-->
+        <!--android:id="@+id/detailJumlahBarangText"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_below="@id/detailMaterialGroup"-->
+        <!--android:layout_marginStart="60dp"-->
+        <!--android:layout_marginTop="20dp"-->
+        <!--android:text="@string/jumlahBarangText"-->
+        <!--android:textAllCaps="true"-->
+        <!--android:textSize="18sp" />-->
+
+    <!--<TextView-->
+        <!--android:id="@+id/detailMaterialQuantity"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_alignBaseline="@id/detailJumlahBarangText"-->
+        <!--android:layout_marginStart="10dp"-->
+        <!--android:layout_toEndOf="@id/detailJumlahBarangText"-->
+        <!--android:text="@string/materialQuantity"-->
+        <!--android:textSize="18sp" />-->
+
+    <!--<TextView-->
+        <!--android:id="@+id/detailHargaBarangText"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_below="@id/detailJumlahBarangText"-->
+        <!--android:layout_marginStart="60dp"-->
+        <!--android:layout_marginTop="20dp"-->
+        <!--android:text="@string/hargaBarangText"-->
+        <!--android:textAllCaps="true"-->
+        <!--android:textSize="18sp" />-->
+
+    <!--<TextView-->
+        <!--android:id="@+id/detailMaterialPrice"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_alignBaseline="@id/detailHargaBarangText"-->
+        <!--android:layout_marginStart="10dp"-->
+        <!--android:layout_toEndOf="@id/detailHargaBarangText"-->
+        <!--android:text="@string/materialPrice"-->
+        <!--android:textSize="18sp" />-->
 
     <Button
         android:id="@+id/editButton"

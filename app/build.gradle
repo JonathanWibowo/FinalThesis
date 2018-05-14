@@ -28,6 +28,8 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
     compile 'com.journeyapps:zxing-android-embedded:3.6.0'
+    // Library for barcode & generating barcode
     compile 'me.dm7.barcodescanner:zxing:1.9' // Library for barcode / QR code scanner
     compile 'com.android.volley:volley:1.1.0' // Library for database connection
+    compile 'com.github.tosslife:pullloadview:1.1.0' // Library for pagination (infinity pagination)
 }

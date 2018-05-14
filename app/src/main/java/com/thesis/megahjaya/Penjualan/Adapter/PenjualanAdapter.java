@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.support.v7.widget.ContentFrameLayout;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,15 +19,16 @@ import com.thesis.megahjaya.Penjualan.ListMaterialPenjualan;
 import com.thesis.megahjaya.Penjualan.PenjualanActivity;
 import com.thesis.megahjaya.R;
 
-import java.util.List;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 
 public class PenjualanAdapter extends RecyclerView.Adapter<PenjualanAdapter.ViewHolder> {
 
-    private List<ListMaterialPenjualan> listMaterialPenjualans;
+    private ArrayList<ListMaterialPenjualan> listMaterialPenjualans;
     private Context context;
 
     // Constructor
-    public PenjualanAdapter(List<ListMaterialPenjualan> listMaterialPenjualans, Context context){
+    public PenjualanAdapter(ArrayList<ListMaterialPenjualan> listMaterialPenjualans, Context context){
         this.listMaterialPenjualans = listMaterialPenjualans;
         this.context = context;
     }
@@ -40,16 +43,39 @@ public class PenjualanAdapter extends RecyclerView.Adapter<PenjualanAdapter.View
 
     // Bind the data with UI element
     @Override
-    public void onBindViewHolder(PenjualanAdapter.ViewHolder holder, int position) {
-        ListMaterialPenjualan listPenjualan = listMaterialPenjualans.get(position);
+    public void onBindViewHolder(final ViewHolder holder, int position) {
+        final ListMaterialPenjualan listPenjualan = listMaterialPenjualans.get(position);
 
-        // Set the data from class ViewHolder at bottom to here (namaBarang, kodeBarang, grupBarang, stokBarang, hargaBarang)
+        // get every single data from list material penjualan file
+        holder.listMaterialPenjualan = listPenjualan;
+
+        // Set the data from class ViewHolder at bottom to here
         holder.namaBarangPenjualan.setText(listPenjualan.getName());
         holder.kodeBarangPenjualan.setText(listPenjualan.getCode());
         holder.grupBarangPenjualan.setText(listPenjualan.getGroup());
-        holder.jumlahBarangPenjualan.setText(String.valueOf(listPenjualan.getQuantity()));
         holder.hargaBarangPenjualan.setText(String.valueOf(listPenjualan.getPrice()));
 
+        // change the background when customer quantity exceed the limit
+//        holder.grupBarangPenjualan.addTextChangedListener(new TextWatcher() {
+//            @Override
+//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+//
+//            }
+//
+//            @Override
+//            public void onTextChanged(CharSequence s, int start, int before, int count) {
+//                for(int n = 0; n < holder)
+//                int customerQuantity = Integer.valueOf(s.toString());
+//            }
+//
+//            @Override
+//            public void afterTextChanged(Editable s) {
+//                int limit = listPenjualan.getQuantity();
+//
+//                // check if the customer quantity exceed the limit
+//                if(limit)
+//            }
+//        });
     }
 
     @Override
@@ -77,23 +103,23 @@ public class PenjualanAdapter extends RecyclerView.Adapter<PenjualanAdapter.View
 //
 //        // Create alert dialog message
 //        AlertDialog alertDialog = alertDialogBuilder.create();
-//        alertDialog.setTitle("Hapus");
+//        alertDialog.setTitle("Hapus Barang");
 //        alertDialog.show();
 //    }
 
 
 
-    public void delete(int position){
-        listMaterialPenjualans.remove(position);
-        notifyItemRemoved(position);
-    }
+//    public void delete(int position){
+//        listMaterialPenjualans.remove(position);
+//        notifyItemRemoved(position);
+//    }
 
     public class ViewHolder extends RecyclerView.ViewHolder{
 
         public Context context;
         public TextView namaBarangPenjualan, kodeBarangPenjualan, grupBarangPenjualan, jumlahBarangPenjualan, hargaBarangPenjualan;
         public ImageView imageViewDelete;
-//        public List<ListMaterialInventory> listMaterialInventories;
+        public ListMaterialPenjualan listMaterialPenjualan;
 
         // Constructor
         public ViewHolder(View itemView) {
@@ -110,9 +136,19 @@ public class PenjualanAdapter extends RecyclerView.Adapter<PenjualanAdapter.View
                 @Override
                 public void onClick(View v) {
                     int position = getAdapterPosition();
-                    delete(position);
+                    listMaterialPenjualans.remove(position);
+                    notifyItemRemoved(position);
+//                    delete(position);
                 }
             });
         }
+    }
+
+
+    // For set filter function
+    public void setFilterPenjualan(ArrayList<ListMaterialPenjualan> getListMaterialPenjualan){
+        listMaterialPenjualans = new ArrayList<>();
+        listMaterialPenjualans.addAll(getListMaterialPenjualan);
+        notifyDataSetChanged();
     }
 }

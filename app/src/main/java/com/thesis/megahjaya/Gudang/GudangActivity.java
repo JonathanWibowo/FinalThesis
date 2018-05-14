@@ -16,6 +16,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.SearchView;
 import android.widget.Toast;
 
@@ -27,6 +28,7 @@ import com.thesis.megahjaya.Gudang.Adapter.InventoryAdapter;
 import com.thesis.megahjaya.Gudang.AddNewMaterial.AddNewMaterialActivity;
 import com.thesis.megahjaya.Gudang.AddNewMaterial.SuccessAddNewActivity;
 import com.thesis.megahjaya.Histori_Penjualan.HistoriPenjualanActivity;
+import com.thesis.megahjaya.LoginActivity;
 import com.thesis.megahjaya.Penjualan.PenjualanActivity;
 import com.thesis.megahjaya.R;
 import com.thesis.megahjaya.pagination.prevNextPagination;
@@ -58,13 +60,11 @@ public class GudangActivity extends AppCompatActivity {
     private int currentPage = 0;
     private int totalPage = prevNextPaginationInventory.TOTAL_MATERIAL/prevNextPaginationInventory.LIST_MATERIAL_PER_PAGE;
 
-    public int TOTAL_MATERIAL;
-    public static final int LIST_MATERIAL_PER_PAGE = 25;
-    public int REMAINING_MATERIAL = TOTAL_MATERIAL % LIST_MATERIAL_PER_PAGE;
-    public int LAST_PAGE = TOTAL_MATERIAL / LIST_MATERIAL_PER_PAGE;
+//    public int TOTAL_MATERIAL;
+//    public static final int LIST_MATERIAL_PER_PAGE = 25;
+//    public int REMAINING_MATERIAL = TOTAL_MATERIAL % LIST_MATERIAL_PER_PAGE;
+//    public int LAST_PAGE = TOTAL_MATERIAL / LIST_MATERIAL_PER_PAGE;
     private Button prev,next;
-
-
 
     // For search item
     private SearchView searchMaterial;
@@ -79,13 +79,33 @@ public class GudangActivity extends AppCompatActivity {
         // Pagination
         prev = (Button) findViewById(R.id.previousBtn);
         next = (Button) findViewById(R.id.nextBtn);
-        prev.setEnabled(false); // make the button cannot be click because user will visit the first pagination for inventory page
-
         searchMaterial = (SearchView) findViewById(R.id.gudangSearchView);
+//        prev.setEnabled(false); // make the button cannot be click because user will visit the first pagination for inventory page
+
         recyclerView = (RecyclerView) findViewById(R.id.gudangRecyclerView);
         recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        LinearLayoutManager linearLayoutManagerInventory = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(linearLayoutManagerInventory);
+//        recyclerView.setLayoutManager(new LinearLayoutManager(this));
         listMaterialInventories = new ArrayList<>();
+
+        // Pagination infinity scroll
+//        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+//            @Override
+//            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+//                super.onScrollStateChanged(recyclerView, newState);
+//            }
+//
+//            @Override
+//            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+//                super.onScrolled(recyclerView, dx, dy);
+//
+//                if(isLastMaterial(recyclerView)){
+//                    Log.i("CHECK_PAGINATION", String.valueOf("SUCCESS"));
+//                }
+//            }
+//        });
+
 
         // Display navigation bar
         navigationBar();
@@ -94,11 +114,24 @@ public class GudangActivity extends AppCompatActivity {
         search();
 
         // Display whole material
-        material();
+        displayMaterial();
 
         // Set the click listener for pagination
-        paginationButton();
+//        paginationButton();
     }
+
+    // check for the last material
+//    private boolean isLastMaterial(RecyclerView recyclerView) {
+//        if(recyclerView.getAdapter().getItemCount() != 0){
+//            int lastMaterial = ((LinearLayoutManager) recyclerView.getLayoutManager()).findLastCompletelyVisibleItemPosition();
+//
+//            if(lastMaterial != recyclerView.NO_POSITION && lastMaterial == recyclerView.getAdapter().getItemCount() - 1){
+//                return true;
+//            }
+//        }
+//
+//        return false;
+//    }
 
     public void navigationBar(){
         drawerLayout = (DrawerLayout) findViewById(R.id.gudangDrawerLayout);
@@ -193,7 +226,7 @@ public class GudangActivity extends AppCompatActivity {
         });
     }
 
-    private void material(){
+    private void displayMaterial(){
         // Display the loading message
         final ProgressDialog progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Mengambil barang...");
@@ -207,31 +240,30 @@ public class GudangActivity extends AppCompatActivity {
                         // Remove the loading message when the loading done
                         progressDialog.dismiss();
                         try {
-                            JSONArray jsonArray = response.getJSONArray("material");
+                            Integer getResponseCode = response.getInt("status");
 
-                            // get length for calculate the total data available for pagination
-//                            TOTAL_MATERIAL = jsonArray.length();
-//                            Log.i("TOTAL MATERIAL", String.valueOf(jsonArray.length()));
+                            if(getResponseCode == 200) {
+                                JSONArray jsonArray = response.getJSONArray("material");
 
-                            for (int x = 0; x < jsonArray.length(); x++){
-                                JSONObject jsonObject = jsonArray.getJSONObject(x);
+                                for (int x = 0; x < jsonArray.length(); x++) {
+                                    JSONObject jsonObject = jsonArray.getJSONObject(x);
 
-                                // Get the JSON data & add the data to list
-                                ListMaterialInventory listInventory = new ListMaterialInventory(
-                                        jsonObject.getString("name"),
-                                        jsonObject.getString("itemCode"),
-                                        jsonObject.getString("desc"),
-                                        jsonObject.getString("group"),
-                                        jsonObject.getInt("quantity"),
-                                        jsonObject.getInt("price")
-                                );
-                                listMaterialInventories.add(listInventory);
+                                    // Get the JSON data & add the data to list
+                                    ListMaterialInventory listInventory = new ListMaterialInventory(
+                                            jsonObject.getString("name"),
+                                            jsonObject.getString("itemCode"),
+                                            jsonObject.getString("desc"),
+                                            jsonObject.getString("group"),
+                                            jsonObject.getInt("quantity"),
+                                            jsonObject.getInt("price")
+                                    );
+                                    listMaterialInventories.add(listInventory);
+                                }
+
+                                // Set the adapter
+                                inventoryAdapter = new InventoryAdapter(listMaterialInventories, getApplicationContext());
+                                recyclerView.setAdapter(inventoryAdapter);
                             }
-
-                            // Set the adapter
-                            inventoryAdapter = new InventoryAdapter(listMaterialInventories, getApplicationContext());
-                            recyclerView.setAdapter(inventoryAdapter);
-
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -242,6 +274,10 @@ public class GudangActivity extends AppCompatActivity {
                 // Remove the loading message when the loading done
                 progressDialog.dismiss();
 
+                // get forbidden result
+                if(error.networkResponse != null && error.networkResponse.statusCode == 400) {
+                    startActivity(new Intent(GudangActivity.this, LoginActivity.class));
+                }
                 // get not found status
                 if(error.networkResponse != null && error.networkResponse.statusCode == 404){
                     Toast.makeText(GudangActivity.this, "Tidak ada barang", Toast.LENGTH_LONG).show();
@@ -252,37 +288,37 @@ public class GudangActivity extends AppCompatActivity {
         Singleton.getInstance(this).addToRequestQueue(jsonObjectRequest);
     }
 
-    public void paginationButton(){
-        prev.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
-
-        next.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                currentPage++;
-            }
-        });
-    }
-
-    private void setButtonSetting(){
-        // Reaching the end of the page
-        if(currentPage == totalPage){
-            prev.setEnabled(true);
-            next.setEnabled(false);
-        }
-        // Reaching the first page
-        else if(currentPage == 0){
-            prev.setEnabled(false);
-            next.setEnabled(true);
-        }
-        // Reaching currentPage > 1 & < end
-        else{
-            prev.setEnabled(true);
-            next.setEnabled(true);
-        }
-    }
+//    public void paginationButton(){
+//        prev.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//            }
+//        });
+//
+//        next.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                currentPage++;
+//            }
+//        });
+//    }
+//
+//    private void setButtonSetting(){
+//        // Reaching the end of the page
+//        if(currentPage == totalPage){
+//            prev.setEnabled(true);
+//            next.setEnabled(false);
+//        }
+//        // Reaching the first page
+//        else if(currentPage == 0){
+//            prev.setEnabled(false);
+//            next.setEnabled(true);
+//        }
+//        // Reaching currentPage > 1 & < end
+//        else{
+//            prev.setEnabled(true);
+//            next.setEnabled(true);
+//        }
+//    }
 }

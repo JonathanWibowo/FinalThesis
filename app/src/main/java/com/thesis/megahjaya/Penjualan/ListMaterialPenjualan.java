@@ -17,27 +17,6 @@ public class ListMaterialPenjualan implements Parcelable {
         this.price = price;
     }
 
-    protected ListMaterialPenjualan(Parcel in) {
-        name = in.readString();
-        code = in.readString();
-        description = in.readString();
-        group = in.readString();
-        quantity = in.readInt();
-        price = in.readInt();
-    }
-
-    public static final Creator<ListMaterialPenjualan> CREATOR = new Creator<ListMaterialPenjualan>() {
-        @Override
-        public ListMaterialPenjualan createFromParcel(Parcel in) {
-            return new ListMaterialPenjualan(in);
-        }
-
-        @Override
-        public ListMaterialPenjualan[] newArray(int size) {
-            return new ListMaterialPenjualan[size];
-        }
-    };
-
     public String getName() {
         return name;
     }
@@ -69,11 +48,32 @@ public class ListMaterialPenjualan implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(name);
-        dest.writeString(code);
-        dest.writeString(description);
-        dest.writeString(group);
-        dest.writeInt(quantity);
-        dest.writeInt(price);
+        dest.writeString(this.name);
+        dest.writeString(this.code);
+        dest.writeString(this.description);
+        dest.writeString(this.group);
+        dest.writeInt(this.quantity);
+        dest.writeInt(this.price);
     }
+
+    protected ListMaterialPenjualan(Parcel in) {
+        this.name = in.readString();
+        this.code = in.readString();
+        this.description = in.readString();
+        this.group = in.readString();
+        this.quantity = in.readInt();
+        this.price = in.readInt();
+    }
+
+    public static final Parcelable.Creator<ListMaterialPenjualan> CREATOR = new Parcelable.Creator<ListMaterialPenjualan>() {
+        @Override
+        public ListMaterialPenjualan createFromParcel(Parcel source) {
+            return new ListMaterialPenjualan(source);
+        }
+
+        @Override
+        public ListMaterialPenjualan[] newArray(int size) {
+            return new ListMaterialPenjualan[size];
+        }
+    };
 }

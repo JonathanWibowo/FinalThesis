@@ -15,10 +15,6 @@ import com.thesis.megahjaya.R;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Jonathan on 3/20/2018.
- */
-
 public class InventoryAdapter extends RecyclerView.Adapter<InventoryAdapter.ViewHolder>{
 
     private ArrayList<ListMaterialInventory> listMaterialInventories;
@@ -43,7 +39,7 @@ public class InventoryAdapter extends RecyclerView.Adapter<InventoryAdapter.View
     public void onBindViewHolder(ViewHolder holder, int position) {
         ListMaterialInventory listInventory = listMaterialInventories.get(position);
 
-        // Set the data from class ViewHolder at bottom to here (namaBarang, kodeBarang, stokBarang, hargaBarang)
+        // Set the data from class ViewHolder at bottom to here
         holder.namaBarangInventory.setText(listInventory.getName());
         holder.kodeBarangInventory.setText(listInventory.getCode());
         holder.grupBarangInventory.setText(listInventory.getGroup());

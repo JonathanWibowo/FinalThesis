@@ -24,10 +24,87 @@
         android:layout_toEndOf="@id/tipeBonText" />
 
     <TextView
-        android:id="@+id/result"
+        android:id="@+id/nomorInvoiceText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:text="@string/open" />
+        android:layout_below="@id/tipeBonText"
+        android:layout_marginTop="15dp"
+        android:text="@string/nomorInvoiceText"
+        android:textSize="16sp" />
+
+    <EditText
+        android:id="@+id/penjualanInfoInvoiceNumber"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/nomorInvoiceText"
+        android:ems="10"
+        android:hint="@string/nomorInvoice"
+        android:inputType="text" />
+
+    <TextView
+        android:id="@+id/namaPembeliText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/penjualanInfoInvoiceNumber"
+        android:layout_marginTop="15dp"
+        android:text="@string/namaPembeliText"
+        android:textSize="16sp" />
+
+    <EditText
+        android:id="@+id/penjualanInfoCustomerName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/namaPembeliText"
+        android:ems="10"
+        android:hint="@string/namaPembeli"
+        android:inputType="textPersonName" />
+
+    <TextView
+        android:id="@+id/alamatText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/penjualanInfoCustomerName"
+        android:layout_marginTop="15dp"
+        android:text="@string/alamatText"
+        android:textSize="16sp" />
+
+    <EditText
+        android:id="@+id/penjualanInfoAddress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/alamatText"
+        android:ems="10"
+        android:hint="@string/alamat"
+        android:inputType="textMultiLine" />
+
+    <TextView
+        android:id="@+id/keteranganText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/penjualanInfoAddress"
+        android:layout_marginTop="15dp"
+        android:text="@string/keteranganText"
+        android:textSize="16sp"/>
+
+    <EditText
+        android:id="@+id/penjualanInfoAdditionalInformation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/keteranganText"
+        android:hint="@string/keterangan"
+        android:inputType="textMultiLine"
+        android:labelFor="@id/keteranganText" />
+
+    <Button
+        android:id="@+id/penjualanInfoNextBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:text="@string/lanjut" />
+
+
 
 </RelativeLayout>

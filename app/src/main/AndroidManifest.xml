@@ -38,7 +38,8 @@
             android:name=".Penjualan.PenjualanInfoActivity"
             android:parentActivityName=".Penjualan.PenjualanActivity" />
         <activity android:name=".NavigationMenuActivity" />
-        <activity android:name=".Penjualan.Search.SearchResultActivity"></activity>
+        <activity android:name=".Penjualan.Search.SearchResultActivity" />
+        <activity android:name=".Penjualan.PenjualanSuccessActivity"></activity>
     </application>
 
 </manifest>

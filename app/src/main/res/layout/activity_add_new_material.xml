@@ -5,26 +5,22 @@
     android:id="@+id/addNewMaterialRelativeLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingTop="8dp"
-    android:paddingLeft="10dp"
-    android:paddingRight="10dp"
+    android:padding="10dp"
     tools:context=".Gudang.AddNewMaterial.AddNewMaterialActivity">
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="10dp">
+        android:layout_height="match_parent">
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/addNewNameText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true"
                 android:text="@string/addMaterialNameText"
                 android:textAllCaps="true"
                 android:textSize="16sp" />
@@ -33,60 +29,14 @@
                 android:id="@+id/addNewMaterialName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_below="@+id/addNewNameText"
                 android:ems="10"
                 android:hint="@string/materialNamePlaceholder"
-                android:inputType="textPersonName" />
-
-            <TextView
-                android:id="@+id/addNewCodeText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignStart="@+id/addNewNameText"
-                android:layout_below="@+id/addNewMaterialName"
-                android:layout_marginTop="12dp"
-                android:text="@string/addMaterialCodeText"
-                android:textAllCaps="true"
-                android:textSize="16sp" />
-
-            <EditText
-                android:id="@+id/addNewMaterialCode"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignStart="@+id/addNewNameText"
-                android:layout_below="@+id/addNewCodeText"
-                android:ems="10"
-                android:hint="@string/materialCodePlaceholder"
-                android:inputType="textPersonName" />
-
-            <TextView
-                android:id="@+id/addNewDescriptionText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignStart="@+id/addNewNameText"
-                android:layout_below="@+id/addNewMaterialCode"
-                android:layout_marginTop="12dp"
-                android:text="@string/addMaterialDescriptionText"
-                android:textAllCaps="true"
-                android:textSize="16sp" />
-
-            <EditText
-                android:id="@+id/addNewMaterialDescription"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignStart="@+id/addNewNameText"
-                android:layout_below="@+id/addNewDescriptionText"
-                android:ems="10"
-                android:hint="@string/materialDescriptionPlaceholder"
                 android:inputType="textPersonName" />
 
             <TextView
                 android:id="@+id/addNewGroupText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignStart="@+id/addNewNameText"
-                android:layout_below="@+id/addNewMaterialDescription"
                 android:layout_marginTop="12dp"
                 android:text="@string/addMaterialGroupText"
                 android:textAllCaps="true"
@@ -96,18 +46,48 @@
                 android:id="@+id/addNewMaterialGroup"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_below="@+id/addNewGroupText"
                 android:ems="10"
                 android:hint="@string/materialGroupPlaceholder"
                 android:inputType="textPersonName" />
 
             <TextView
+                android:id="@+id/addNewCodeText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:text="@string/addMaterialCodeText"
+                android:textAllCaps="true"
+                android:textSize="16sp" />
+
+            <EditText
+                android:id="@+id/addNewMaterialCode"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="@string/materialCodePlaceholder"
+                android:inputType="textPersonName" />
+
+            <!--<TextView-->
+                <!--android:id="@+id/addNewDescriptionText"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginTop="12dp"-->
+                <!--android:text="@string/addMaterialDescriptionText"-->
+                <!--android:textAllCaps="true"-->
+                <!--android:textSize="16sp" />-->
+
+            <!--<EditText-->
+                <!--android:id="@+id/addNewMaterialDescription"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:ems="10"-->
+                <!--android:hint="@string/materialDescriptionPlaceholder"-->
+                <!--android:inputType="textPersonName" />-->
+
+            <TextView
                 android:id="@+id/addNewQuantityText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignStart="@+id/addNewNameText"
-                android:layout_below="@+id/addNewMaterialGroup"
                 android:layout_marginTop="12dp"
                 android:text="@string/addMaterialQuantityText"
                 android:textAllCaps="true"
@@ -117,17 +97,31 @@
                 android:id="@+id/addNewMaterialQuantity"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignStart="@+id/addNewNameText"
-                android:layout_below="@+id/addNewQuantityText"
                 android:ems="10"
                 android:hint="@string/materialQuantityPlaceholder"
                 android:inputType="number" />
 
             <TextView
+                android:id="@+id/addNewUnitTypeText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:text="@string/addMaterialQuantityUnitType"
+                android:textAllCaps="true"
+                android:textSize="16sp" />
+
+            <EditText
+                android:id="@+id/addNewMaterialUnit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="@string/materialUnitTypePlaceholder"
+                android:inputType="text" />
+
+            <TextView
                 android:id="@+id/addNewPriceText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/addNewMaterialQuantity"
                 android:layout_marginTop="12dp"
                 android:text="@string/addMaterialPriceText"
                 android:textAllCaps="true"
@@ -137,23 +131,39 @@
                 android:id="@+id/addNewMaterialPrice"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_below="@+id/addNewPriceText"
                 android:ems="10"
                 android:hint="@string/materialPricePlaceholder"
                 android:inputType="number" />
 
-        </RelativeLayout>
+            <TextView
+                android:id="@+id/addNewMinimumText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:text="@string/addMaterialMinimumText"
+                android:textAllCaps="true"
+                android:textSize="16sp" />
+
+            <EditText
+                android:id="@+id/addNewMaterialMinimum"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="@string/materialMinimumPlaceholder"
+                android:inputType="number" />
+
+            <Button
+                android:id="@+id/addNewMaterialButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center"
+                android:layout_marginTop="30dp"
+                android:text="@string/tambahBarang" />
+
+        </LinearLayout>
 
     </ScrollView>
-
-    <Button
-        android:id="@+id/addNewMaterialButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="10dp"
-        android:text="@string/tambahBarang" />
 
 </RelativeLayout>

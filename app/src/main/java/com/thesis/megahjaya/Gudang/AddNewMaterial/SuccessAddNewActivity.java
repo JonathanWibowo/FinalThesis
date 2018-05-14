@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.MultiFormatWriter;
@@ -16,9 +17,10 @@ import com.thesis.megahjaya.R;
 
 public class SuccessAddNewActivity extends AppCompatActivity {
 
-    private ImageView barcode;
     private String materialCode = "Testing the barcode";
     private String textQRCode;
+    private ImageView barcode;
+    private TextView displayNewMaterialName;
     private Button saveBtn;
 
     @Override
@@ -27,8 +29,18 @@ public class SuccessAddNewActivity extends AppCompatActivity {
         setContentView(R.layout.activity_success_add_new);
 
         barcode = (ImageView) findViewById(R.id.materialBarcode);
+        displayNewMaterialName = (TextView) findViewById(R.id.newMaterialName);
         saveBtn = (Button) findViewById(R.id.saveBtn);
 
+        // get data from previous activity
+        String newMaterialName = getIntent().getStringExtra("item_name");
+        String newMaterialCode = getIntent().getStringExtra("item_code");
+
+        // set material name
+        displayNewMaterialName.setText(newMaterialName);
+
+        // generate barcode for
+//        generateBarcode(newMaterialCode);
         generateBarcode();
 
         saveBtn.setOnClickListener(new View.OnClickListener() {
@@ -41,6 +53,7 @@ public class SuccessAddNewActivity extends AppCompatActivity {
 
     // Generating barcode with material code inside
     private void generateBarcode(){
+//        textQRCode = newMaterialCode.toString().trim();
         textQRCode = materialCode.toString().trim();
         MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
 

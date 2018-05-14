@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/searchMaterialPenjualanLinearLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
     <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/penjualanSuccessCardView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <RelativeLayout
+            android:id="@+id/penjualanSuccessRelativeLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="5dp"
@@ -18,61 +19,65 @@
             android:padding="5dp">
 
             <TextView
-                android:id="@+id/searchResultMaterialName"
+                android:id="@+id/penjualanSuccessMaterialName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true"
                 android:text="@string/materialName"
                 android:textAllCaps="true"
                 android:textSize="16sp"
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/searchResultMaterialDescription"
+                android:id="@+id/penjualanSuccessMaterialQuantity"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/searchResultMaterialName"
+                android:layout_below="@id/penjualanSuccessMaterialName"
                 android:layout_marginTop="8dp"
-                android:text="@string/materialDesc"
-                android:textSize="16sp" />
-
-            <TextView
-                android:id="@+id/penjualanJumlahText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/searchResultMaterialDescription"
-                android:layout_marginTop="8dp"
-                android:textSize="16sp"
-                android:text="@string/jumlahBarangText"/>
-
-            <TextView
-                android:id="@+id/searchResultMaterialQuantity"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignBaseline="@id/penjualanJumlahText"
-                android:layout_toEndOf="@+id/searchResultMaterialName"
                 android:text="@string/materialQuantity"
+                android:textAllCaps="true"
                 android:textSize="16sp" />
 
             <TextView
-                android:id="@+id/searchResultRupiahText"
+                android:id="@+id/rupiahText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/penjualanJumlahText"
+                android:layout_below="@id/penjualanSuccessMaterialQuantity"
                 android:layout_marginTop="8dp"
                 android:text="@string/rp"
-                android:textSize="16sp"/>
+                android:textSize="16sp" />
 
             <TextView
-                android:id="@+id/searchResultMaterialPrice"
+                android:id="@+id/penjualanSuccessMaterialPrice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignBaseline="@+id/searchResultRupiahText"
-                android:layout_toEndOf="@+id/searchResultRupiahText"
+                android:layout_alignBaseline="@id/rupiahText"
+                android:layout_toEndOf="@id/rupiahText"
                 android:layout_marginStart="8dp"
-                android:textSize="16sp"
-                android:text="@string/materialPrice" />
+                android:text="@string/materialPrice"
+                android:textAllCaps="true"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/totalText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/penjualanSuccessMaterialTotalPrice"
+                android:layout_toStartOf="@+id/penjualanSuccessMaterialTotalPrice"
+                android:layout_marginEnd="8dp"
+                android:text="@string/total"
+                android:textAllCaps="true"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/penjualanSuccessMaterialTotalPrice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/penjualanSuccessMaterialPrice"
+                android:layout_alignBottom="@+id/penjualanSuccessMaterialPrice"
+                android:layout_alignParentEnd="true"
+                android:text="@string/materialTotalPrice"
+                android:textAllCaps="true"
+                android:textSize="16sp" />
 
         </RelativeLayout>
 
