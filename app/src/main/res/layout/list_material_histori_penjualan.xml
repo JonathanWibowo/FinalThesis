@@ -12,25 +12,35 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:layout_marginBottom="1dp"
-            android:background="@drawable/list_layout">
+            android:background="@drawable/list_layout"
+            android:padding="5dp"
+            android:layout_marginBottom="5dp">
+
+            <TextView
+                android:id="@+id/historiPenjualanCustomerDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/customerDate"
+                android:textAllCaps="true"
+                android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/historiPenjualanCustomerName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/namaPembeliText"
+                android:layout_below="@id/historiPenjualanCustomerDate"
+                android:layout_marginTop="8dp"
+                android:text="@string/customerName"
                 android:textAllCaps="true"
                 android:textSize="16sp" />
 
             <TextView
-                android:id="@+id/historiPenjualanKeteranganText"
-                android:layout_width="wrap_content"
+                android:id="@+id/historiPenjualanCustomerAddress"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/historiPenjualanCustomerName"
                 android:layout_marginTop="8dp"
-                android:text="@string/keteranganText"
+                android:text="@string/customerAddress"
                 android:textAllCaps="true"
                 android:textSize="16sp" />
 
@@ -38,9 +48,31 @@
                 android:id="@+id/historiPenjualanCustomerInformation"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/historiPenjualanKeteranganText"
+                android:layout_below="@id/historiPenjualanCustomerAddress"
                 android:layout_marginTop="8dp"
+                android:text="@string/customerInformation"
+                android:textAllCaps="true"
                 android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/historiPenjualanTotalPembelianText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/historiPenjualanCustomerInformation"
+                android:layout_marginTop="8dp"
+                android:text="@string/hargaTotal"
+                android:textAllCaps="true"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/historiPenjualanCustomerTotalPrice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/historiPenjualanTotalPembelianText"
+                android:layout_toEndOf="@id/historiPenjualanTotalPembelianText"
+                android:layout_marginStart="8dp"
+                android:textSize="16sp"
+                android:text="@string/customerTotalPrice"/>
 
         </RelativeLayout>
 

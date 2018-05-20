@@ -73,20 +73,21 @@
                 android:layout_alignBaseline="@id/inventoryJumlahBarangText"
                 android:layout_marginStart="8dp"
                 android:layout_toEndOf="@id/inventoryJumlahBarangText"
-                android:text="@string/materialQuantity" />
+                android:text="@string/quantity"
+                android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/inventoryRp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignBottom="@+id/inventoryMaterialPrice"
-                android:layout_toStartOf="@+id/inventoryMaterialPrice"
+                android:layout_alignBottom="@+id/searchMaterialPrice"
+                android:layout_toStartOf="@+id/searchMaterialPrice"
                 android:layout_marginEnd="5dp"
                 android:text="@string/rp"
                 android:textSize="16sp" />
 
             <TextView
-                android:id="@+id/inventoryMaterialPrice"
+                android:id="@+id/searchMaterialPrice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignBaseline="@+id/inventoryMaterialQuantity"

@@ -1,7 +1,6 @@
 package com.thesis.megahjaya.Penjualan;
 
 import android.content.Intent;
-import android.service.autofill.FillEventHistory;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -20,20 +19,25 @@ import java.util.ArrayList;
 public class PenjualanSuccessActivity extends AppCompatActivity {
 
     // For parcelable
-    private Penjualan penjualan;
-    private ArrayList<Penjualan> penjualanArrayList;
+    private ArrayList<PenjualanTemp> penjualanTempArrayList;
+    private PenjualanTemp penjualanTemp;
 
     // For recycler view
     private RecyclerView recyclerView;
     private PenjualanSuccessAdapter penjualanSuccessAdapter;
 
     // For list item (view data)
-    private ArrayList<ListMaterialPenjualanSuccess> listMaterialPenjualanSuccessArrayList;
-    private ListMaterialPenjualanSuccess listMaterialPenjualanSuccess;
+    private ArrayList<MaterialPenjualanSuccess> listMaterialPenjualanSuccessArrayList;
+    private MaterialPenjualanSuccess materialPenjualanSuccess;
 
+    // For calculate whole material
     private Integer totalWholeMaterial = 0;
 
-    private TextView textView;
+    private String setCustomerName;
+    private String setInvoiceDate;
+    private Integer setTotalWholePrice;
+
+    private TextView customerName, invoiceDate, totalWholePrice;
     private Button cekBon, menuUtama;
 
     @Override
@@ -41,7 +45,9 @@ public class PenjualanSuccessActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_penjualan_success);
 
-        textView = (TextView) findViewById(R.id.textView);
+        invoiceDate = (TextView) findViewById(R.id.pembelianSuccessCurrentDate);
+        customerName = (TextView) findViewById(R.id.pembelianSuccessCustomerName);
+        totalWholePrice = (TextView) findViewById(R.id.pembelianSuccessTotalPrice);
         cekBon = (Button) findViewById(R.id.penjualanSuccessCheckInvoiceBtn);
         menuUtama = (Button) findViewById(R.id.penjualanSuccessMainMenuBtn);
 
@@ -52,7 +58,7 @@ public class PenjualanSuccessActivity extends AppCompatActivity {
         listMaterialPenjualanSuccessArrayList = new ArrayList<>();
 
         // Retrieve data from parcel
-        retrieveParcel();
+        retrieveAllData();
 
         cekBon.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -70,35 +76,40 @@ public class PenjualanSuccessActivity extends AppCompatActivity {
     }
 
     // Retrieve data from parcel
-    private void retrieveParcel(){
+    private void retrieveAllData(){
         // Retrieve parcel data
-        penjualanArrayList = getIntent().getParcelableArrayListExtra("listMaterial");
-        Log.i("ARRAY_LIST_SUCCESS", String.valueOf(penjualanArrayList));
+        penjualanTempArrayList = getIntent().getParcelableArrayListExtra("listMaterial");
 
         // Retrieve list of data from ArrayList
-        for(int x = 0; x < penjualanArrayList.size(); x++){
-            penjualan = penjualanArrayList.get(x);
+        for(int x = 0; x < penjualanTempArrayList.size(); x++){
+            penjualanTemp = penjualanTempArrayList.get(x);
 
-            totalWholeMaterial = totalWholeMaterial + penjualan.getTotalUnitPrice();
+            // Calculate whole price
+            totalWholeMaterial = totalWholeMaterial + penjualanTemp.getTotalUnitPrice();
 
-            listMaterialPenjualanSuccess = new ListMaterialPenjualanSuccess(
-                    penjualan.getName(),
-                    penjualan.getQuantity(),
-                    penjualan.getUnitPrice(),
-                    penjualan.getTotalUnitPrice()
+            // Insert data to new array list
+            materialPenjualanSuccess = new MaterialPenjualanSuccess(
+                    penjualanTemp.getName(),
+                    penjualanTemp.getQuantity(),
+                    penjualanTemp.getUnitPrice(),
+                    penjualanTemp.getTotalUnitPrice()
             );
 
-            listMaterialPenjualanSuccessArrayList.add(listMaterialPenjualanSuccess);
+            listMaterialPenjualanSuccessArrayList.add(materialPenjualanSuccess);
         }
 
-        penjualanSuccessAdapter = new PenjualanSuccessAdapter(listMaterialPenjualanSuccessArrayList, getApplicationContext());
+        penjualanSuccessAdapter = new PenjualanSuccessAdapter(listMaterialPenjualanSuccessArrayList, PenjualanSuccessActivity.this);
         recyclerView.setAdapter(penjualanSuccessAdapter);
 
-//        textView.setText(penjualan.getName() + ", " + penjualan.getQuantity() + ", " + penjualan.getUnitPrice() + ", " + penjualan.getTotalUnitPrice() + "\n");
-        Log.i("GET_NAME", String.valueOf(penjualan.getName()));
-        Log.i("TOTAL_DATA", String.valueOf(penjualanArrayList.size()));
-        Log.i("listmaterialpenjualan", String.valueOf(listMaterialPenjualanSuccessArrayList));
-        Log.i("listsize", String.valueOf(listMaterialPenjualanSuccessArrayList.size()));
-        Log.i("totalPrice", String.valueOf(totalWholeMaterial));
+        // set customer name, invoice date & total price
+        customerName.setText(getIntent().getStringExtra("customerName"));
+        invoiceDate.setText(getIntent().getStringExtra("invoiceTime"));
+        totalWholePrice.setText(getIntent().getStringExtra("totalWholeMaterialPrice"));
+
+//        Log.i("GET_NAME", String.valueOf(penjualanTemp.getName()));
+//        Log.i("TOTAL_DATA", String.valueOf(penjualanTempArrayList.size()));
+//        Log.i("listmaterialpenjualan", String.valueOf(listMaterialPenjualanSuccessArrayList));
+//        Log.i("listsize", String.valueOf(listMaterialPenjualanSuccessArrayList.size()));
+//        Log.i("totalPrice", String.valueOf(totalWholeMaterial));
     }
 }

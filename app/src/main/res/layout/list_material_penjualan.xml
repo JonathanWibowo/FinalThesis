@@ -84,7 +84,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_toEndOf="@id/penjualanJumlahText"
                 android:ems="4"
-                android:hint="@string/materialQuantity"
+                android:hint="@string/quantity"
                 android:inputType="number"
                 android:labelFor="@id/penjualanJumlahText" />
 

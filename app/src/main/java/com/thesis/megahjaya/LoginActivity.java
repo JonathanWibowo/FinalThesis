@@ -29,6 +29,7 @@ public class LoginActivity extends AppCompatActivity {
     // Session
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
+    public static final String SESSION = "session";
 
     private EditText uField, pField;
     private Button login, button;
@@ -89,6 +90,9 @@ public class LoginActivity extends AppCompatActivity {
                                 loginSession(getToken);
 
                                 startActivity(new Intent(LoginActivity.this, PenjualanActivity.class));
+//                                Intent intent = new Intent(LoginActivity.this, PenjualanActivity.class);
+//                                startActivity(intent);
+//                                LoginActivity.this.finish();
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -119,9 +123,10 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void loginSession(String getToken){
-        sharedPreferences = getSharedPreferences("session", Context.MODE_PRIVATE);
+        sharedPreferences = getSharedPreferences(SESSION, Context.MODE_PRIVATE);
         editor = sharedPreferences.edit();
         editor.putString("token", getToken);
+        editor.putBoolean("loginStatus", true);
         editor.commit();
     }
 }

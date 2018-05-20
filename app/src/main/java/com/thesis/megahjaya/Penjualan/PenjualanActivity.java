@@ -12,16 +12,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.SearchView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -32,21 +30,17 @@ import com.thesis.megahjaya.Gudang.GudangActivity;
 import com.thesis.megahjaya.Histori_Penjualan.HistoriPenjualanActivity;
 import com.thesis.megahjaya.LoginActivity;
 import com.thesis.megahjaya.Penjualan.Adapter.PenjualanAdapter;
+import com.thesis.megahjaya.Penjualan.Search.SearchActivity;
 import com.thesis.megahjaya.R;
 import com.thesis.megahjaya.singleton.Singleton;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
-import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
-import java.lang.reflect.Array;
 import java.net.URLEncoder;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 public class PenjualanActivity extends AppCompatActivity {
 
@@ -64,16 +58,11 @@ public class PenjualanActivity extends AppCompatActivity {
     private PenjualanAdapter penjualanAdapter;
 
     // For list item (view data)
-    private ArrayList<ListMaterialPenjualan> listMaterialPenjualanArrayList;
+    private ArrayList<MaterialPenjualan> materialPenjualanArrayList;
 
-    // For list penjualan customer (save data)
-    private Penjualan penjualan;
-    private ArrayList<Penjualan> penjualanArrayList;
-
-    // For calculate total unit price
-    private Integer materialQuantity;
-    private Integer materialPrice;
-    private Integer totalMaterialUnit;
+    // For list penjualanTemp customer (save data)
+    private PenjualanTemp penjualanTemp;
+    private ArrayList<PenjualanTemp> penjualanTempArrayList;
 
     // For search item
     private SearchView searchMaterial;
@@ -81,9 +70,17 @@ public class PenjualanActivity extends AppCompatActivity {
     // For getting value back from barcode scanner process
     private final int GET_BARCODE = 0;
 
+    // For calculate total unit price
+    private Integer materialQuantity;
+    private Integer materialPrice;
+    private Integer totalMaterialUnit;
+
+    private PenjualanAdapter.ViewHolder penjualanAdapterViewHolder;
+
     int materialQuantityDatabase; // For quantity from database
     ArrayList<String> materialCodeDatabase = new ArrayList<>(); // For store material code
 
+    private Toolbar toolbar;
     private Button scan, lanjut;
 
     @Override
@@ -91,17 +88,15 @@ public class PenjualanActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_penjualan);
 
-        // Get session data (token) from login
-        getSessionData();
-
+        toolbar = (Toolbar) findViewById(R.id.penjualanToolbar);
         scan = (Button) findViewById(R.id.scanButton);
         lanjut = (Button) findViewById(R.id.nextButton);
 
-        recyclerView = (RecyclerView) findViewById(R.id.penjualanRecyclerView);
-        LinearLayoutManager linearLayoutManagerPenjualan = new LinearLayoutManager(this);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(linearLayoutManagerPenjualan);
-        listMaterialPenjualanArrayList = new ArrayList<>();
+        // Get session data (token) from login
+        getSessionData();
+
+        // Manage recyclerview
+        manageRecyclerView();
 
         // Display navigation bar
         navigationBar();
@@ -135,75 +130,97 @@ public class PenjualanActivity extends AppCompatActivity {
         }
     }
 
+    // manage recyclerview
+    private void manageRecyclerView(){
+        LinearLayoutManager linearLayoutManagerPenjualan = new LinearLayoutManager(this);
+
+        // set the recycler view
+        recyclerView = (RecyclerView) findViewById(R.id.penjualanRecyclerView);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(linearLayoutManagerPenjualan);
+        materialPenjualanArrayList = new ArrayList<>();
+
+        // Set the adapter
+        penjualanAdapter = new PenjualanAdapter(materialPenjualanArrayList, PenjualanActivity.this);
+        recyclerView.setAdapter(penjualanAdapter);
+    }
+
     // save the list data to new array list and send to next activity using parcelable
     private void processData(){
-        penjualanArrayList = new ArrayList<>();
+        penjualanTempArrayList = new ArrayList<>();
 
         // get list of viewholder
         for(int y = 0; y < recyclerView.getChildCount(); y++){
             PenjualanAdapter.ViewHolder viewHolder = (PenjualanAdapter.ViewHolder) recyclerView.getChildViewHolder(recyclerView.getChildAt(y));
 
+            // set and calculate total material unit
             materialQuantity = Integer.parseInt(viewHolder.jumlahBarangPenjualan.getText().toString());
             materialPrice = Integer.parseInt(viewHolder.hargaBarangPenjualan.getText().toString());
-
             totalMaterialUnit = materialQuantity * materialPrice;
 
             // get all data & move to another array list for parcel
-            penjualan = new Penjualan(
+            penjualanTemp = new PenjualanTemp(
                     viewHolder.namaBarangPenjualan.getText().toString(),
                     Integer.parseInt(viewHolder.jumlahBarangPenjualan.getText().toString()),
                     Integer.parseInt(viewHolder.hargaBarangPenjualan.getText().toString()),
                     totalMaterialUnit
             );
-            Log.i("nama_barang", viewHolder.namaBarangPenjualan.toString());
-            Log.i("totalUnitPrice", String.valueOf(totalMaterialUnit));
 
-            penjualanArrayList.add(penjualan);
+            penjualanTempArrayList.add(penjualanTemp);
         }
 
-        // Send array list to penjualan success page using parcelable
+        // Send array list to penjualanTemp success page using parcelable
         Intent sendListMaterialIntent = new Intent(PenjualanActivity.this, PenjualanInfoActivity.class);
-        sendListMaterialIntent.putParcelableArrayListExtra("listMaterial", penjualanArrayList);
+        sendListMaterialIntent.putParcelableArrayListExtra("listMaterial", penjualanTempArrayList);
         startActivity(sendListMaterialIntent);
     }
 
     // Set search view on toolbar & make search function
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu){
-        MenuInflater menuInflater = getMenuInflater();
-        menuInflater.inflate(R.menu.menu_search, menu);
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu){
+//        MenuInflater menuInflater = getMenuInflater();
+//        menuInflater.inflate(R.menu.menu_search, menu);
+//
+//        MenuItem menuItem = menu.findItem(R.id.menuSearch);
+//        SearchView searchView = (SearchView) menuItem.getActionView();
+//
+//        searchView.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                startActivity(new Intent(PenjualanActivity.this, SearchActivity.class));
+//            }
+//        });
+//        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+//            @Override
+//            public boolean onQueryTextSubmit(String query) {
+//                return false;
+//            }
+//
+//            @Override
+//            public boolean onQueryTextChange(String newText) {
+//                ArrayList<MaterialPenjualan> getListPenjualanName = new ArrayList<>();
+//
+//                for(MaterialPenjualan listPenjualan : materialPenjualanArrayList){
+//                    String getMaterialNamePenjualan = listPenjualan.getName().toLowerCase();
+//
+//                    if(getMaterialNamePenjualan.contains(newText)){
+//                        getListPenjualanName.add(listPenjualan);
+//                    }
+//                }
+//
+//                penjualanAdapter.setFilterPenjualan(getListPenjualanName);
+//
+//                return true;
+//            }
+//        });
 
-        MenuItem menuItem = menu.findItem(R.id.menuSearch);
-        SearchView searchView = (SearchView) menuItem.getActionView();
+//        return super.onCreateOptionsMenu(menu);
+//    }
 
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                ArrayList<ListMaterialPenjualan> getListPenjualanName = new ArrayList<>();
-
-                for(ListMaterialPenjualan listPenjualan : listMaterialPenjualanArrayList){
-                    String getMaterialNamePenjualan = listPenjualan.getName().toLowerCase();
-
-                    if(getMaterialNamePenjualan.contains(newText)){
-                        getListPenjualanName.add(listPenjualan);
-                    }
-                }
-
-                penjualanAdapter.setFilterPenjualan(getListPenjualanName);
-
-                return true;
-            }
-        });
-
-        return super.onCreateOptionsMenu(menu);
-    }
-
+    // Generate navigation bar
     public void navigationBar(){
+        setSupportActionBar(toolbar);
+
         drawerLayout = (DrawerLayout) findViewById(R.id.penjualanDrawerLayout);
         navigationView = (NavigationView) findViewById(R.id.penjualanNavigationMenu);
 
@@ -242,25 +259,30 @@ public class PenjualanActivity extends AppCompatActivity {
         });
     }
 
+    // Create menu on toolbar
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.menu_search, menu);
+
+        return super.onCreateOptionsMenu(menu);
+    }
+
     // Make the sidebar menu icon clickable
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        // For search icon
+        switch(item.getItemId()){
+            case R.id.searchIcon:
+                startActivity(new Intent(PenjualanActivity.this, SearchActivity.class));
+                break;
+        }
+
         if(actionBarDrawerToggle.onOptionsItemSelected(item)){
             return true;
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    // Get barcode data & pass it to function for get the material using captured data
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if(requestCode == GET_BARCODE && resultCode == RESULT_OK){
-            String getBarcodeData = data.getStringExtra("scannedBarcode");
-            getMaterialData(getBarcodeData);
-        }
     }
 
     // Get material data from database based from scanned code
@@ -298,7 +320,7 @@ public class PenjualanActivity extends AppCompatActivity {
                                     JSONObject insideArray = jsonArray.getJSONObject(x);
 
                                     // Get the JSON data & add the data to list
-                                    ListMaterialPenjualan listPenjualan = new ListMaterialPenjualan(
+                                    MaterialPenjualan listPenjualan = new MaterialPenjualan(
                                             insideArray.getString("name"),
                                             insideArray.getString("itemCode"),
                                             insideArray.getString("desc"),
@@ -313,12 +335,9 @@ public class PenjualanActivity extends AppCompatActivity {
 //                                            Toast.makeText(PenjualanActivity.this, "Barang sudah diambil", Toast.LENGTH_LONG).show();
 //                                        }
 //                                    }
-                                    listMaterialPenjualanArrayList.add(listPenjualan);
+                                    materialPenjualanArrayList.add(listPenjualan);
                                 }
-
-                                // Set the adapter
-                                penjualanAdapter = new PenjualanAdapter(listMaterialPenjualanArrayList, getApplicationContext());
-                                recyclerView.setAdapter(penjualanAdapter);
+                                penjualanAdapter.notifyDataSetChanged();
 //                                Log.i("MATERIALCODEDATABASE", String.valueOf(materialQuantityDatabase));
                             }
                         } catch (JSONException e) {
@@ -334,11 +353,23 @@ public class PenjualanActivity extends AppCompatActivity {
                 }
                 // get not found result
                 if(error.networkResponse != null && error.networkResponse.statusCode == 404){
-                    Toast.makeText(PenjualanActivity.this, "Barang tidak ditemukan", Toast.LENGTH_LONG).show();
+                    progressDialog.dismiss();
+                    Toast.makeText(PenjualanActivity.this, "Barang tidak ditemukan", Toast.LENGTH_SHORT).show();
                     error.printStackTrace();
                 }
             }
         });
         Singleton.getInstance(this).addToRequestQueue(jsonObjectRequest);
+    }
+
+    // Get barcode data & pass it to function for get the material using captured data
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(requestCode == GET_BARCODE && resultCode == RESULT_OK){
+            String getBarcodeData = data.getStringExtra("scannedBarcode");
+            getMaterialData(getBarcodeData);
+        }
     }
 }

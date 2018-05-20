@@ -10,13 +10,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.SearchView;
 import android.widget.Toast;
 
@@ -39,7 +37,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class GudangActivity extends AppCompatActivity {
 
@@ -53,21 +50,23 @@ public class GudangActivity extends AppCompatActivity {
     private InventoryAdapter inventoryAdapter;
 
     // For list of the item
-    private ArrayList<ListMaterialInventory> listMaterialInventories;
+    private ArrayList<MaterialInventory> listMaterialInventories;
 
     // For pagination
-    prevNextPagination prevNextPaginationInventory = new prevNextPagination();
-    private int currentPage = 0;
-    private int totalPage = prevNextPaginationInventory.TOTAL_MATERIAL/prevNextPaginationInventory.LIST_MATERIAL_PER_PAGE;
+//    prevNextPagination prevNextPaginationInventory = new prevNextPagination();
+//    private int currentPage = 0;
+//    private int totalPage = prevNextPaginationInventory.TOTAL_MATERIAL/prevNextPaginationInventory.LIST_MATERIAL_PER_PAGE;
 
 //    public int TOTAL_MATERIAL;
 //    public static final int LIST_MATERIAL_PER_PAGE = 25;
 //    public int REMAINING_MATERIAL = TOTAL_MATERIAL % LIST_MATERIAL_PER_PAGE;
 //    public int LAST_PAGE = TOTAL_MATERIAL / LIST_MATERIAL_PER_PAGE;
-    private Button prev,next;
+//    private Button prev,next;
 
     // For search item
     private SearchView searchMaterial;
+
+    private Toolbar toolbar;
 
     private static final String url = "https://thesisandroid.000webhostapp.com/material/listMaterial.php";
 
@@ -77,17 +76,25 @@ public class GudangActivity extends AppCompatActivity {
         setContentView(R.layout.activity_gudang);
 
         // Pagination
-        prev = (Button) findViewById(R.id.previousBtn);
-        next = (Button) findViewById(R.id.nextBtn);
+//        prev = (Button) findViewById(R.id.previousBtn);
+//        next = (Button) findViewById(R.id.nextBtn);
         searchMaterial = (SearchView) findViewById(R.id.gudangSearchView);
 //        prev.setEnabled(false); // make the button cannot be click because user will visit the first pagination for inventory page
 
-        recyclerView = (RecyclerView) findViewById(R.id.gudangRecyclerView);
-        recyclerView.setHasFixedSize(true);
-        LinearLayoutManager linearLayoutManagerInventory = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(linearLayoutManagerInventory);
-//        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        listMaterialInventories = new ArrayList<>();
+        toolbar = (Toolbar) findViewById(R.id.gudangToolbar);
+        setSupportActionBar(toolbar);
+
+        // Manage recyclerview
+        manageRecyclewView();
+
+        // Display navigation bar
+        navigationBar();
+
+        // Search View function
+        search();
+
+        // Display whole material
+        displayMaterial();
 
         // Pagination infinity scroll
 //        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -105,16 +112,6 @@ public class GudangActivity extends AppCompatActivity {
 //                }
 //            }
 //        });
-
-
-        // Display navigation bar
-        navigationBar();
-
-        // Search View function
-        search();
-
-        // Display whole material
-        displayMaterial();
 
         // Set the click listener for pagination
 //        paginationButton();
@@ -200,7 +197,15 @@ public class GudangActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void search(){
+    private void manageRecyclewView(){
+        recyclerView = (RecyclerView) findViewById(R.id.gudangRecyclerView);
+        recyclerView.setHasFixedSize(true);
+        LinearLayoutManager linearLayoutManagerInventory = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(linearLayoutManagerInventory);
+        listMaterialInventories = new ArrayList<>();
+    }
+
+    private void search(){
         searchMaterial.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String string) {
@@ -209,9 +214,9 @@ public class GudangActivity extends AppCompatActivity {
 
             @Override
             public boolean onQueryTextChange(String string) {
-                ArrayList<ListMaterialInventory> getListInventoryName = new ArrayList<>();
+                ArrayList<MaterialInventory> getListInventoryName = new ArrayList<>();
 
-                for(ListMaterialInventory listInventory : listMaterialInventories){
+                for(MaterialInventory listInventory : listMaterialInventories){
                     String getMaterialName = listInventory.getName().toLowerCase();
 
                     if(getMaterialName.contains(string)){
@@ -249,12 +254,13 @@ public class GudangActivity extends AppCompatActivity {
                                     JSONObject jsonObject = jsonArray.getJSONObject(x);
 
                                     // Get the JSON data & add the data to list
-                                    ListMaterialInventory listInventory = new ListMaterialInventory(
+                                    MaterialInventory listInventory = new MaterialInventory(
                                             jsonObject.getString("name"),
                                             jsonObject.getString("itemCode"),
                                             jsonObject.getString("desc"),
                                             jsonObject.getString("group"),
                                             jsonObject.getInt("quantity"),
+                                            jsonObject.getInt("minimum"),
                                             jsonObject.getInt("price")
                                     );
                                     listMaterialInventories.add(listInventory);

@@ -1,35 +1,28 @@
 package com.thesis.megahjaya.Penjualan.Adapter;
 
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.support.v7.widget.ContentFrameLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.thesis.megahjaya.Gudang.Adapter.InventoryAdapter;
-import com.thesis.megahjaya.Gudang.ListMaterialInventory;
-import com.thesis.megahjaya.Penjualan.ListMaterialPenjualan;
-import com.thesis.megahjaya.Penjualan.PenjualanActivity;
+import com.thesis.megahjaya.Penjualan.MaterialPenjualan;
 import com.thesis.megahjaya.R;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class PenjualanAdapter extends RecyclerView.Adapter<PenjualanAdapter.ViewHolder> {
 
-    private ArrayList<ListMaterialPenjualan> listMaterialPenjualans;
+    private ArrayList<MaterialPenjualan> materialPenjualans;
     private Context context;
 
     // Constructor
-    public PenjualanAdapter(ArrayList<ListMaterialPenjualan> listMaterialPenjualans, Context context){
-        this.listMaterialPenjualans = listMaterialPenjualans;
+    public PenjualanAdapter(ArrayList<MaterialPenjualan> materialPenjualans, Context context){
+        this.materialPenjualans = materialPenjualans;
         this.context = context;
     }
 
@@ -37,23 +30,23 @@ public class PenjualanAdapter extends RecyclerView.Adapter<PenjualanAdapter.View
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater layoutInflaterPenjualan = LayoutInflater.from(context);
-        View viewPenjualan = layoutInflaterPenjualan.inflate(R.layout.list_material_penjualan, parent, false);
-        return new ViewHolder(viewPenjualan); // take data from public ViewHolder(View itemView)
+        View penjualanView = layoutInflaterPenjualan.inflate(R.layout.list_material_penjualan, parent, false);
+        return new ViewHolder(penjualanView); // take data from public ViewHolder(View itemView)
     }
 
     // Bind the data with UI element
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        final ListMaterialPenjualan listPenjualan = listMaterialPenjualans.get(position);
+        MaterialPenjualan materialPenjualan = materialPenjualans.get(position);
 
         // get every single data from list material penjualan file
-        holder.listMaterialPenjualan = listPenjualan;
+        holder.materialPenjualan = materialPenjualan;
 
         // Set the data from class ViewHolder at bottom to here
-        holder.namaBarangPenjualan.setText(listPenjualan.getName());
-        holder.kodeBarangPenjualan.setText(listPenjualan.getCode());
-        holder.grupBarangPenjualan.setText(listPenjualan.getGroup());
-        holder.hargaBarangPenjualan.setText(String.valueOf(listPenjualan.getPrice()));
+        holder.namaBarangPenjualan.setText(materialPenjualan.getName());
+        holder.kodeBarangPenjualan.setText(materialPenjualan.getCode());
+        holder.grupBarangPenjualan.setText(materialPenjualan.getGroup());
+        holder.hargaBarangPenjualan.setText(String.valueOf(materialPenjualan.getPrice()));
 
         // change the background when customer quantity exceed the limit
 //        holder.grupBarangPenjualan.addTextChangedListener(new TextWatcher() {
@@ -80,46 +73,39 @@ public class PenjualanAdapter extends RecyclerView.Adapter<PenjualanAdapter.View
 
     @Override
     public int getItemCount() {
-        return listMaterialPenjualans.size();
+        return materialPenjualans.size();
     }
 
     // Delete the current recycleview
-//    public void delete(final int position, Context context){
-//        // Create alert dialog builder
-//        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
-//        alertDialogBuilder.setMessage("Barang akan dihapus")
-//                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        listMaterialPenjualans.remove(position);
-//                        notifyItemRemoved(position);
-//                    }
-//                }).setNegativeButton("Batal", new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialog, int which) {
-//                dialog.cancel();
-//            }
-//        });
-//
-//        // Create alert dialog message
-//        AlertDialog alertDialog = alertDialogBuilder.create();
-//        alertDialog.setTitle("Hapus Barang");
-//        alertDialog.show();
-//    }
+    public void delete(final int position){
+        // Create alert dialog builder
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
+        alertDialogBuilder.setMessage("Barang akan dihapus")
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        materialPenjualans.remove(position);
+                        notifyItemRemoved(position);
+                    }
+                }).setNegativeButton("Batal", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
 
-
-
-//    public void delete(int position){
-//        listMaterialPenjualans.remove(position);
-//        notifyItemRemoved(position);
-//    }
+        // Create alert dialog message
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.setTitle("Hapus Barang");
+        alertDialog.show();
+    }
 
     public class ViewHolder extends RecyclerView.ViewHolder{
 
         public Context context;
         public TextView namaBarangPenjualan, kodeBarangPenjualan, grupBarangPenjualan, jumlahBarangPenjualan, hargaBarangPenjualan;
         public ImageView imageViewDelete;
-        public ListMaterialPenjualan listMaterialPenjualan;
+        public MaterialPenjualan materialPenjualan;
 
         // Constructor
         public ViewHolder(View itemView) {
@@ -136,19 +122,16 @@ public class PenjualanAdapter extends RecyclerView.Adapter<PenjualanAdapter.View
                 @Override
                 public void onClick(View v) {
                     int position = getAdapterPosition();
-                    listMaterialPenjualans.remove(position);
-                    notifyItemRemoved(position);
-//                    delete(position);
+                    delete(position);
                 }
             });
         }
     }
 
-
-    // For set filter function
-    public void setFilterPenjualan(ArrayList<ListMaterialPenjualan> getListMaterialPenjualan){
-        listMaterialPenjualans = new ArrayList<>();
-        listMaterialPenjualans.addAll(getListMaterialPenjualan);
-        notifyDataSetChanged();
-    }
+//    // For set filter function
+//    public void setFilterPenjualan(ArrayList<MaterialPenjualan> getMaterialPenjualan){
+//        materialPenjualans = new ArrayList<>();
+//        materialPenjualans.addAll(getMaterialPenjualan);
+//        notifyDataSetChanged();
+//    }
 }

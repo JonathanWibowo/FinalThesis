@@ -37,7 +37,7 @@ public class HistoriPenjualanActivity extends AppCompatActivity {
         drawerLayout.addDrawerListener(actionBarDrawerToggle);
         actionBarDrawerToggle.syncState();
 
-        getSupportActionBar().setTitle("Histori Penjualan");
+        getSupportActionBar().setTitle("Histori PenjualanTemp");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {

@@ -27,12 +27,12 @@
     <string name="cekInvoice">Cek Bon</string>
     <string name="menuUtama">Menu Utama</string>
     <!-- Button -->
-    <!-- Penjualan -->
+    <!-- PenjualanTemp -->
     <string name="kosong">Tidak ada permintaan barang dari pembeli</string>
     <string name="cariBarang">Cari Barang</string>
     <string name="jumlah">Jumlah: </string>
-    <!-- Penjualan -->
-    <!-- Penjualan Info -->
+    <!-- PenjualanTemp -->
+    <!-- PenjualanTemp Info -->
     <string name="tipeBon">Tipe Bon:</string>
     <string-array name="listBon">
         <item>Bon 1</item>
@@ -47,18 +47,26 @@
     <string name="alamat">Alamat</string>
     <string name="keteranganText">Keterangan:</string>
     <string name="keterangan">Keterangan</string>
-    <!-- Penjualan Info -->
+    <!-- PenjualanTemp Info -->
 
-    <!-- Penjualan Success -->
-    <string name="successCustomerName">Pembelian untuk:</string>
-    <string name="successTotalPrice">Total Pembelian</string>
+    <!-- PenjualanTemp Success -->
+    <string name="successCustomerName">Pembeli:</string>
+    <string name="successNamaPembeliText">Nama Pembeli</string>
+    <string name="successCustomerAddress">Alamat:</string>
+    <string name="successAlamatText">Alamat pembeli</string>
+    <string name="successCustomerInfo">Info</string>
     <string name="total">Total:</string>
     <string name="materialTotalPrice">1000000</string>
-    <!-- Penjualan Success -->
+    <!-- PenjualanTemp Success -->
 
-    <!-- Histori Penjualan -->
-    <!--<string name="customerName">Nama Pembeli</string>-->
-    <!-- Histori Penjualan -->
+    <!-- Histori PenjualanTemp -->
+    <string name="customerDate">Tanggal</string>
+    <string name="customerName">Nama Pembeli</string>
+    <string name="customerAddress">Alamat</string>
+    <string name="customerInformation">Keterangan</string>
+    <string name="hargaTotal">Harga total:</string>
+    <string name="customerTotalPrice">1000000</string>
+    <!-- Histori PenjualanTemp -->
 
     <!-- Gudang -->
     <string name="materialName">Nama Barang</string>
@@ -67,13 +75,21 @@
     <string name="groupText">Group: </string>
     <string name="materialGroup">Nama_Group</string>
     <string name="satuanText">Satuan:</string>
-    <string name="materialUnit">Kg/Satuan/Ons/Lembar/...</string>
+    <string name="materialUnit">Kg</string>
     <string name="jumlahBarangText">Jumlah Barang: </string>
-    <string name="materialQuantity">123</string>
+    <string name="quantity">123</string>
+    <string name="stokMinimumText">Stok Minimum:</string>
     <string name="hargaBarangText">Harga Barang: </string>
     <string name="rp">Rp</string>
     <string name="materialPrice">12500</string>
     <!-- Gudang -->
+    <!-- Update -->
+    <string name="updateNamaBarangText">Nama Barang:</string>
+    <string name="updateKodeBarangText">Kode Barang:</string>
+    <string name="updateJumlahBarangText">Jumlah Barang: </string>
+    <string name="updateHargaBarangText">Harga Barang: </string>
+    <string name="updateStokMinimumText">Stok Minimum:</string>
+    <!-- Update -->
     <!-- Tambah Barang Baru -->
     <string name="addMaterialNameText">Nama Barang:</string>
     <string name="addMaterialGroupText">Group/Kategori Barang:</string>

@@ -7,23 +7,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.thesis.megahjaya.Penjualan.ListMaterialPenjualan;
-import com.thesis.megahjaya.Penjualan.ListMaterialPenjualanSuccess;
-import com.thesis.megahjaya.Penjualan.PenjualanSuccessActivity;
+import com.thesis.megahjaya.Penjualan.MaterialPenjualanSuccess;
 import com.thesis.megahjaya.R;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.List;
 
 public class PenjualanSuccessAdapter extends RecyclerView.Adapter<PenjualanSuccessAdapter.ViewHolder> {
 
-    private ArrayList<ListMaterialPenjualanSuccess> listMaterialPenjualanSuccesses;
+    private ArrayList<MaterialPenjualanSuccess> materialPenjualanSuccesses;
     private Context context;
 
     // Constructor
-    public PenjualanSuccessAdapter(ArrayList<ListMaterialPenjualanSuccess> listMaterialPenjualanSuccesses, Context context) {
-        this.listMaterialPenjualanSuccesses = listMaterialPenjualanSuccesses;
+    public PenjualanSuccessAdapter(ArrayList<MaterialPenjualanSuccess> materialPenjualanSuccesses, Context context) {
+        this.materialPenjualanSuccesses = materialPenjualanSuccesses;
         this.context = context;
     }
 
@@ -38,17 +34,17 @@ public class PenjualanSuccessAdapter extends RecyclerView.Adapter<PenjualanSucce
     // Bind the data with UI element
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        ListMaterialPenjualanSuccess listSuccess = listMaterialPenjualanSuccesses.get(position);
+        MaterialPenjualanSuccess listSuccess = materialPenjualanSuccesses.get(position);
 
         holder.successNamaBarang.setText(listSuccess.getName());
-        holder.successHargaSatuan.setText(listSuccess.getBuyQuantity());
-        holder.successHargaSatuan.setText(listSuccess.getUnitPrice());
-        holder.successHargaTotal.setText(listSuccess.getTotalPrice());
+        holder.successJumlahBeli.setText(String.valueOf(listSuccess.getBuyQuantity()));
+        holder.successHargaSatuan.setText(String.valueOf(listSuccess.getUnitPrice()));
+        holder.successHargaTotal.setText(String.valueOf(listSuccess.getTotalPrice()));
     }
 
     @Override
     public int getItemCount() {
-        return listMaterialPenjualanSuccesses.size();
+        return materialPenjualanSuccesses.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{
@@ -57,7 +53,6 @@ public class PenjualanSuccessAdapter extends RecyclerView.Adapter<PenjualanSucce
 
         public ViewHolder(View itemView) {
             super(itemView);
-
             successNamaBarang = (TextView) itemView.findViewById(R.id.penjualanSuccessMaterialName);
             successJumlahBeli = (TextView) itemView.findViewById(R.id.penjualanSuccessMaterialQuantity);
             successHargaSatuan = (TextView) itemView.findViewById(R.id.penjualanSuccessMaterialPrice);
