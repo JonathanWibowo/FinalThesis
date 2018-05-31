@@ -4,17 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Gudang.Detail.DetailInventoryActivity">
+    tools:context=".Gudang.Detail.DetailInventoryActivity"
+    tools:layout_editor_absoluteY="25dp">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/detailToolbar"
-        android:layout_width="0dp"
+        android:layout_width="411dp"
         android:layout_height="wrap_content"
         android:background="@color/colorPrimary"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <!--<LinearLayout-->
     <!--android:id="@+id/detailInventoryLinearLayout"-->
@@ -25,9 +23,10 @@
 
     <TextView
         android:id="@+id/detailMaterialName"
-        android:layout_width="0dp"
+        android:layout_width="411dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="16dp"
         android:text="@string/materialName"
         android:textAlignment="center"
         android:textAllCaps="true"
@@ -41,7 +40,9 @@
         android:id="@+id/detailMaterialCode"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="20dp"
         android:text="@string/materialCode"
         android:textAlignment="center"
         android:textAllCaps="true"
@@ -52,15 +53,16 @@
 
     <TextView
         android:id="@+id/detailMaterialDescription"
-        android:layout_width="match_parent"
+        android:layout_width="411dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
         android:textAlignment="center"
         android:textAllCaps="false"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/detailMaterialCode" />
+        app:layout_constraintTop_toBottomOf="@+id/detailHargaBarangText" />
 
     <!--<LinearLayout-->
     <!--android:layout_width="match_parent"-->
@@ -74,28 +76,28 @@
         android:id="@+id/detailGroupText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginTop="16dp"
-        android:text="@string/groupText"
+        android:layout_marginStart="140dp"
+        android:layout_marginTop="20dp"
+        android:text="@string/tipeText"
         android:textAllCaps="true"
         android:textSize="18sp"
-        app:layout_constraintEnd_toStartOf="@+id/detailMaterialGroup"
-        app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/detailMaterialDescription" />
+        app:layout_constraintTop_toBottomOf="@+id/detailMaterialCode" />
 
     <TextView
         android:id="@+id/detailMaterialGroup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
-        android:text="@string/materialGroup"
+        android:layout_marginTop="20dp"
+        android:text="@string/materialType"
         android:textAllCaps="true"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/detailGroupText"
-        app:layout_constraintTop_toBottomOf="@+id/detailMaterialDescription" />
+        app:layout_constraintTop_toBottomOf="@+id/detailMaterialCode" />
 
     <!--</LinearLayout>-->
 
@@ -111,24 +113,28 @@
         android:id="@+id/detailUnitText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginStart="100dp"
+        android:layout_marginTop="20dp"
         android:text="@string/satuanText"
         android:textAllCaps="true"
         android:textSize="18sp"
-        app:layout_constraintStart_toStartOf="@+id/detailGroupText"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/detailGroupText" />
 
     <TextView
         android:id="@+id/detailMaterialUnit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
+        android:layout_marginTop="20dp"
         android:text="@string/materialUnit"
         android:textAllCaps="true"
         android:textSize="18sp"
-        app:layout_constraintBaseline_toBaselineOf="@+id/detailUnitText"
-        app:layout_constraintStart_toEndOf="@+id/detailUnitText" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/detailUnitText"
+        app:layout_constraintTop_toBottomOf="@+id/detailMaterialGroup" />
 
     <!--</LinearLayout>-->
 
@@ -144,23 +150,25 @@
         android:id="@+id/detailJumlahBarangText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="67dp"
-        android:layout_marginStart="65dp"
+        android:layout_marginStart="100dp"
+        android:layout_marginTop="20dp"
         android:text="@string/jumlahBarangText"
         android:textAllCaps="true"
         android:textSize="18sp"
-        app:layout_constraintBaseline_toBaselineOf="@+id/detailMaterialQuantity"
-        app:layout_constraintEnd_toEndOf="@+id/detailMaterialGroup"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/detailUnitText" />
 
     <TextView
         android:id="@+id/detailMaterialQuantity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="20dp"
         android:text="@string/quantity"
         android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/detailJumlahBarangText"
         app:layout_constraintTop_toBottomOf="@+id/detailMaterialUnit" />
 
@@ -178,23 +186,27 @@
         android:id="@+id/detailStokMinimumText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginStart="100dp"
+        android:layout_marginTop="20dp"
         android:text="@string/stokMinimumText"
         android:textAllCaps="true"
         android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="@+id/detailJumlahBarangText"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/detailJumlahBarangText" />
 
     <TextView
         android:id="@+id/detailMaterialMinimumStock"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="20dp"
         android:text="@string/quantity"
         android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/detailStokMinimumText"
-        app:layout_constraintTop_toBottomOf="@+id/detailJumlahBarangText" />
+        app:layout_constraintTop_toBottomOf="@+id/detailMaterialQuantity" />
 
     <!--</LinearLayout>-->
 
@@ -210,24 +222,27 @@
         android:id="@+id/detailHargaBarangText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="15dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginStart="100dp"
+        android:layout_marginTop="20dp"
         android:text="@string/hargaBarangText"
         android:textAllCaps="true"
         android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="@+id/detailStokMinimumText"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/detailStokMinimumText" />
 
     <TextView
         android:id="@+id/detailMaterialPrice"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="20dp"
         android:text="@string/materialPrice"
         android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/detailHargaBarangText"
-        app:layout_constraintTop_toBottomOf="@+id/detailStokMinimumText" />
+        app:layout_constraintTop_toBottomOf="@+id/detailMaterialMinimumStock" />
 
     <!--</LinearLayout>-->
 
@@ -337,10 +352,12 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="125dp"
+        android:layout_marginBottom="24dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
         android:text="@string/ubah"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/detailHargaBarangText" />
+        app:layout_constraintStart_toStartOf="parent" />
 
 </android.support.constraint.ConstraintLayout>

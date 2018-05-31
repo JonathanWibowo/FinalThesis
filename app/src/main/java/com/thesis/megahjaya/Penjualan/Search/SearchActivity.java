@@ -5,22 +5,18 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.SearchView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.thesis.megahjaya.Gudang.MaterialInventory;
 import com.thesis.megahjaya.Penjualan.PenjualanActivity;
-import com.thesis.megahjaya.Penjualan.Search.SearchAdapterFile.SearchAdapter;
+import com.thesis.megahjaya.Penjualan.Search.SearchAdapter.SearchAdapter;
 import com.thesis.megahjaya.R;
 import com.thesis.megahjaya.singleton.Singleton;
 
@@ -40,18 +36,24 @@ public class SearchActivity extends AppCompatActivity {
     private ArrayList<SearchMaterial> searchMaterialArrayList;
     private SearchMaterial searchMaterial;
 
+    // Array list for checkbox
+    private ArrayList<SearchMaterial> selectionMaterialArrayList = new ArrayList<>();
+    int count = 0;
+
     private static final String url = "https://thesisandroid.000webhostapp.com/material/listMaterial.php";
 
-    private EditText editText;
+    private SearchView searchView;
     private CheckBox checkBox;
     private Button okButton;
+
+    StringBuffer stringBuffer = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
 
-        editText = (EditText) findViewById(R.id.editTextSearchMaterialName);
+        searchView = (SearchView) findViewById(R.id.searchViewMaterialName);
         checkBox = (CheckBox) findViewById(R.id.searchCheckBox);
         okButton = (Button) findViewById(R.id.okButton);
 
@@ -67,71 +69,56 @@ public class SearchActivity extends AppCompatActivity {
         okButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+//                stringBuffer = new StringBuffer();
+
+//                for(SearchMaterial searchMaterial : searchAdapter){
+//
+//                }
+
                 Intent searchIntent = new Intent(SearchActivity.this, PenjualanActivity.class);
 //                searchIntent.putExtra("materialName", );
                 startActivity(searchIntent);
+
             }
         });
     }
 
     private void manageRecyclerView(){
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+
         recyclerView = (RecyclerView) findViewById(R.id.searchRecyclerView);
         recyclerView.setHasFixedSize(true);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(linearLayoutManager);
         searchMaterialArrayList = new ArrayList<>();
+
+        searchAdapter = new SearchAdapter(searchMaterialArrayList, this);
+
     }
 
     private void search(){
-        editText.addTextChangedListener(textWatcher);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String string) {
+                return false;
+            }
 
+            @Override
+            public boolean onQueryTextChange(String string) {
+                ArrayList<SearchMaterial> getSearchMaterialArrayList = new ArrayList<>();
 
+                for(SearchMaterial searchMaterial : searchMaterialArrayList){
+                    String getMaterialName = searchMaterial.getMaterialName().toLowerCase();
 
+                    if(getMaterialName.contains(string)){
+                        getSearchMaterialArrayList.add(searchMaterial);
+                    }
+                }
 
-//        searchMaterial.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-//            @Override
-//            public boolean onQueryTextSubmit(String string) {
-//                return false;
-//            }
-//
-//            @Override
-//            public boolean onQueryTextChange(String string) {
-//                ArrayList<MaterialInventory> getListInventoryName = new ArrayList<>();
-//
-//                for(MaterialInventory listInventory : listMaterialInventories){
-//                    String getMaterialName = listInventory.getName().toLowerCase();
-//
-//                    if(getMaterialName.contains(string)){
-//                        getListInventoryName.add(listInventory);
-//                    }
-//                }
-//
-//                inventoryAdapter.setFilter(getListInventoryName);
-//
-//                return true;
-//            }
-//        });
-    }
+                searchAdapter.setFilter(getSearchMaterialArrayList);
 
-    private TextWatcher textWatcher = new TextWatcher() {
-        @Override
-        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-        }
-
-        @Override
-        public void onTextChanged(CharSequence s, int start, int before, int count) {
-            searchAdapter.setFilter(searchMaterialArrayList);
-        }
-
-        @Override
-        public void afterTextChanged(Editable s) {
-        }
-    };
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        editText.removeTextChangedListener(textWatcher);
+                return true;
+            }
+        });
     }
 
     private void displayMaterial(){
@@ -172,5 +159,25 @@ public class SearchActivity extends AppCompatActivity {
             }
         });
         Singleton.getInstance(this).addToRequestQueue(jsonObjectRequest);
+    }
+
+    public void selectMaterial(View view, int position){
+        // Check if the checkbox is checked or not
+        if(((CheckBox)view).isChecked()){
+            selectionMaterialArrayList.add(searchMaterialArrayList.get(position));
+
+            Toast.makeText(SearchActivity.this, searchMaterialArrayList.get(position).getMaterialName(), Toast.LENGTH_LONG).show();
+        }
+        else{
+            selectionMaterialArrayList.remove(searchMaterialArrayList.get(position));
+        }
+    }
+
+    public void retrieveMaterialCode() {
+        // Get scanned value and bring the scanned value to previous activity
+        Intent intent = new Intent(SearchActivity.this, PenjualanActivity.class);
+//        intent.putExtra("materialCode", String.valueOf(result));
+        setResult(RESULT_OK, intent);
+        finish();
     }
 }

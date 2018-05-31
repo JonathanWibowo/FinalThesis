@@ -1,6 +1,8 @@
 package com.thesis.megahjaya.Penjualan;
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -13,10 +15,12 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.thesis.megahjaya.Gudang.AddNewMaterial.AddNewMaterialActivity;
 import com.thesis.megahjaya.R;
 import com.thesis.megahjaya.singleton.Singleton;
 
@@ -29,6 +33,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Map;
 
 public class PenjualanInfoActivity extends AppCompatActivity {
 
@@ -41,24 +46,32 @@ public class PenjualanInfoActivity extends AppCompatActivity {
     private MaterialPenjualanSuccess materialPenjualanSuccess;
 
     // For handling the data for spinner
-    ArrayAdapter<CharSequence> arrayAdapter;
+    ArrayAdapter<CharSequence> tipeBonArrayAdapter;
+    ArrayAdapter<CharSequence> statusBonArrayAdapter;
 
     // For calculate whole material
     private Integer totalUnitPrice = 0;
     private Integer totalWholeMaterialPrice = 0;
 
-    String getTipeBon; // Get tipe bon value
-    Integer setTipeBon;
-    String currDate;
+    // Value for tipe bon
+    private String getTipeBon;
+    private Integer setTipeBon;
+
+    // Value for status bon
+    private String getStatusBon;
+    private Integer setStatusBon;
+
+    // For calendar
+    private String currDate;
     private Calendar calendar;
-//    Date currentDate;
 
     // url
-    private static final String url = "";
+    private static final String url = "https://thesisandroid.000webhostapp.com/invoice/makeInvoice.php";
+
 
     private Toolbar toolbar;
     private Spinner tipeBon;
-    private EditText invoiceNum, customerName, address, info;
+    private EditText invoiceNum, name, address, telpNumber, info, discount;
     private Button nextBtn;
 
     @Override
@@ -69,49 +82,41 @@ public class PenjualanInfoActivity extends AppCompatActivity {
         toolbar = (Toolbar) findViewById(R.id.penjualanInfoToolbar);
         tipeBon = (Spinner) findViewById(R.id.spinnerPenjualanInfo);
         invoiceNum = (EditText) findViewById(R.id.penjualanInfoInvoiceNumber);
-        customerName = (EditText) findViewById(R.id.penjualanInfoCustomerName);
+        name = (EditText) findViewById(R.id.penjualanInfoCustomerName);
         address = (EditText) findViewById(R.id.penjualanInfoAddress);
+        telpNumber = (EditText) findViewById(R.id.penjualanInfoTelephone);
         info = (EditText) findViewById(R.id.penjualanInfoAdditionalInformation);
+        discount = (EditText) findViewById(R.id.penjualanInfoDiscount);
         nextBtn = (Button) findViewById(R.id.penjualanInfoNextBtn);
 
         // set toolbar name & back button
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("Penjualan Info");
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        setToolbar();
 
         // Retrieve data from parcel
         retrieveTempParcel();
 
-        Log.i("returnStatement", String.valueOf(retrieveTempParcel()));
-
-        // Dropdown (spinner)
-        dropdownSpinner();
+        // Tipe Bon
+        tipeBonSpinner();
 
         nextBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                getInfoPenjualanData(materialPenjualanSuccessArrayList);
-                calendar = Calendar.getInstance();
-                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
-                currDate = simpleDateFormat.format(calendar.getTime());
-
-                // get total whole price
-                for(int x = 0; x < materialPenjualanSuccessArrayList.size(); x++){
-                    materialPenjualanSuccess = materialPenjualanSuccessArrayList.get(x);
-
-                    totalWholeMaterialPrice = totalWholeMaterialPrice + materialPenjualanSuccess.getTotalPrice();
+                // check if the name and address is still blank
+                if(name.getText().toString().isEmpty() || address.getText().toString().isEmpty()){
+                    Toast.makeText(PenjualanInfoActivity.this, "Nama pembeli & alamat wajib diisi", Toast.LENGTH_LONG).show();
                 }
-
-//                Log.i("totalPrice", String.valueOf(totalWholeMaterialPrice));
-
-                Intent finalIntent = new Intent(PenjualanInfoActivity.this, PenjualanSuccessActivity.class);
-                finalIntent.putParcelableArrayListExtra("listMaterial", penjualanTempArrayList);
-                finalIntent.putExtra("invoiceTime", currDate);
-                finalIntent.putExtra("customerName", customerName.getText().toString());
-                finalIntent.putExtra("totalWholeMaterialPrice", totalWholeMaterialPrice);
-                startActivity(finalIntent);
+                else{
+                // input data to database
+                    getInfoPenjualanData(materialPenjualanSuccessArrayList, setTipeBon, setStatusBon);
+                }
             }
         });
+    }
+
+    private void setToolbar(){
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("Penjualan Info");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     // Retrieve data from parcel
@@ -138,17 +143,14 @@ public class PenjualanInfoActivity extends AppCompatActivity {
 
             materialPenjualanSuccessArrayList.add(materialPenjualanSuccess);
         }
-
-        Log.i("totalUnitPrice", String.valueOf(totalUnitPrice));
-
         return materialPenjualanSuccessArrayList;
     }
 
-    // Dropdown (spinner)
-    public void dropdownSpinner(){
-        arrayAdapter = ArrayAdapter.createFromResource(this, R.array.listBon, android.R.layout.simple_spinner_item);
-        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        tipeBon.setAdapter(arrayAdapter);
+    // Dropdown for invoice type
+    private Integer tipeBonSpinner(){
+        tipeBonArrayAdapter = ArrayAdapter.createFromResource(this, R.array.listBon, android.R.layout.simple_spinner_item);
+        tipeBonArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        tipeBon.setAdapter(tipeBonArrayAdapter);
         tipeBon.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -164,50 +166,57 @@ public class PenjualanInfoActivity extends AppCompatActivity {
                 if(getTipeBon.equals("Bon 3")){
                     setTipeBon = 3;
                 }
-//                Toast.makeText(PenjualanInfoActivity.this, getTipeBon, Toast.LENGTH_LONG).show();
-//                Toast.makeText(PenjualanInfoActivity.this, String.valueOf(setTipeBon), Toast.LENGTH_LONG).show();
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
+
+        return setTipeBon;
     }
 
-    private void getInfoPenjualanData(ArrayList<MaterialPenjualanSuccess> materialPenjualanSuccessArrayList){
+    private void getInfoPenjualanData(ArrayList<MaterialPenjualanSuccess> materialPenjualanSuccessArrayList, final Integer setTipeBon, Integer setStatusBon){
         // get the current time
-//        currentDate = Calendar.getInstance().getTime();
         calendar = Calendar.getInstance();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
         currDate = simpleDateFormat.format(calendar.getTime());
 
         // get total whole price
+        getTotalPrice();
+
+        // put list of data to JSON Array
+        JSONArray jsonArray = new JSONArray();
+
         for(int x = 0; x < materialPenjualanSuccessArrayList.size(); x++){
-            materialPenjualanSuccess = materialPenjualanSuccessArrayList.get(x);
+            // get list data from previous activity and insert it to JSONObject
+            JSONObject getListMaterial = new JSONObject();
+            try {
+                getListMaterial.put("name", materialPenjualanSuccessArrayList.get(x).getName());
+                getListMaterial.put("quantity", materialPenjualanSuccessArrayList.get(x).getBuyQuantity());
+                getListMaterial.put("unitPrice", materialPenjualanSuccessArrayList.get(x).getUnitPrice());
+                getListMaterial.put("totalPrice", materialPenjualanSuccessArrayList.get(x).getTotalPrice());
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
 
-            totalWholeMaterialPrice = totalWholeMaterialPrice + materialPenjualanSuccess.getTotalPrice();
+            // after finish put list of data to JSONObject, insert the object into JSONArray
+            jsonArray.put(getListMaterial);
         }
 
-        // make JSONArray & put array list data into JSONArray
-        JSONArray jsonArray = new JSONArray(materialPenjualanSuccessArrayList);
-
-        for(int y = 0; y < materialPenjualanSuccessArrayList.size(); y++){
-            jsonArray.put(materialPenjualanSuccessArrayList.get(y));
-        }
-
-        // Get value from edit text
-        HashMap<String, String> penjualanMap = new HashMap<>();
-        penjualanMap.put("inv_number", invoiceNum.getText().toString());
-        penjualanMap.put("inv_date", currDate.toString());
-        penjualanMap.put("inv_address", address.getText().toString());
-        penjualanMap.put("inv_totalPrice", String.valueOf(totalWholeMaterialPrice));
-        penjualanMap.put("inv_type", getTipeBon.toString());
-
-        JSONObject jsonObject = new JSONObject(penjualanMap);
-
-        // Insert array list of materialchose by customer inside JSON Object
+        // put list array to json object
+        JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put("list", jsonArray);
+            jsonObject.put("inv_type", setTipeBon.toString());
+            jsonObject.put("inv_date", currDate.toString());
+            jsonObject.put("inv_number", invoiceNum.getText().toString());
+            jsonObject.put("inv_name", name.getText());
+            jsonObject.put("inv_address", address.getText().toString());
+//            jsonObject.put("cst_contact", telpNumber.getText().toString());
+            jsonObject.put("inv_info", info.getText().toString());
+            jsonObject.put("inv_list_material", jsonArray);
+            jsonObject.put("inv_discount", discount.getText().toString());
+            jsonObject.put("inv_total_price", totalWholeMaterialPrice.toString());
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -216,14 +225,85 @@ public class PenjualanInfoActivity extends AppCompatActivity {
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
+                        try {
+                            Integer getResponseCode = response.getInt("status");
 
+                            if(getResponseCode == 201){
+                                // Pass some important data to be displayed to next page
+                                Intent finalIntent = new Intent(PenjualanInfoActivity.this, PenjualanSuccessActivity.class);
+                                finalIntent.putParcelableArrayListExtra("listMaterial", penjualanTempArrayList);
+                                finalIntent.putExtra("invoiceType", setTipeBon.toString());
+                                finalIntent.putExtra("invoiceDate", currDate);
+                                finalIntent.putExtra("customerName", name.getText().toString());
+                                finalIntent.putExtra("customerAddress", address.getText().toString());
+                                finalIntent.putExtra("customerInfo", info.getText().toString());
+                                finalIntent.putExtra("customerTotalPrice", totalWholeMaterialPrice);
+                                startActivity(finalIntent);
+                                finish();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-
+                if(error.networkResponse != null && error.networkResponse.statusCode == 400){
+//                    Toast.makeText(PenjualanInfoActivity.this, "ERROR! Silahkan periksa data kembali sebelum melanjutkan ke halaman selanjutnya", Toast.LENGTH_LONG).show();
+                    dataErrorMessage();
+                }
+                if(error.networkResponse != null && error.networkResponse.statusCode == 500){
+                    serverErrorMessage();
+                }
             }
         });
         Singleton.getInstance(this).addToRequestQueue(jsonObjectRequest);
+    }
+
+    private void dataErrorMessage(){
+        // Create alert dialog builder
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(PenjualanInfoActivity.this);
+        alertDialogBuilder.setMessage("Mohon cek kembali data sebelum lanjut ke tahap terakhir")
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                            }
+                        }
+                );
+
+        // Create alert dialog message
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.setTitle("Error");
+        alertDialog.show();
+    }
+
+    private void serverErrorMessage(){
+        // Create alert dialog builder
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(PenjualanInfoActivity.this);
+        alertDialogBuilder.setMessage("Terjadi masalah pada server")
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                            }
+                        }
+                );
+
+        // Create alert dialog message
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.setTitle("Server Error");
+        alertDialog.show();
+    }
+
+    private int getTotalPrice(){
+        // get total whole price
+        for(int x = 0; x < materialPenjualanSuccessArrayList.size(); x++){
+            materialPenjualanSuccess = materialPenjualanSuccessArrayList.get(x);
+
+            totalWholeMaterialPrice = totalWholeMaterialPrice + materialPenjualanSuccess.getTotalPrice();
+        }
+
+        return totalWholeMaterialPrice;
     }
 }

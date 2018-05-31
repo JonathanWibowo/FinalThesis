@@ -7,7 +7,21 @@
     android:layout_height="match_parent"
     tools:context=".Histori_Penjualan.HistoriPenjualanActivity">
 
-    <RelativeLayout
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/historiPenjualanToolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimary"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    </LinearLayout>
+
+    <android.support.constraint.ConstraintLayout
         android:id="@+id/historyPenjualanRelativeLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -15,16 +29,24 @@
         <SearchView
             android:id="@+id/historiPenjualanSearchView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_marginTop="56dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/historiPenjualanRecyclerView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@+id/historiPenjualanSearchView"
-            android:scrollbars="vertical" />
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:scrollbars="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/historiPenjualanSearchView"
+            app:layout_constraintVertical_bias="0.00999999" />
 
-    </RelativeLayout>
+    </android.support.constraint.ConstraintLayout>
 
     <!-- Show navigation menu -->
     <android.support.design.widget.NavigationView

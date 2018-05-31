@@ -2,8 +2,12 @@ package com.thesis.megahjaya.Penjualan.Adapter;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,12 +21,12 @@ import java.util.ArrayList;
 
 public class PenjualanAdapter extends RecyclerView.Adapter<PenjualanAdapter.ViewHolder> {
 
-    private ArrayList<MaterialPenjualan> materialPenjualans;
+    private ArrayList<MaterialPenjualan> materialPenjualanArrayList;
     private Context context;
 
     // Constructor
-    public PenjualanAdapter(ArrayList<MaterialPenjualan> materialPenjualans, Context context){
-        this.materialPenjualans = materialPenjualans;
+    public PenjualanAdapter(ArrayList<MaterialPenjualan> materialPenjualanArrayList, Context context){
+        this.materialPenjualanArrayList = materialPenjualanArrayList;
         this.context = context;
     }
 
@@ -31,13 +35,14 @@ public class PenjualanAdapter extends RecyclerView.Adapter<PenjualanAdapter.View
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater layoutInflaterPenjualan = LayoutInflater.from(context);
         View penjualanView = layoutInflaterPenjualan.inflate(R.layout.list_material_penjualan, parent, false);
-        return new ViewHolder(penjualanView); // take data from public ViewHolder(View itemView)
+        return new ViewHolder(penjualanView/*, new customerQuantityEditText()*/); // take data from public ViewHolder(View itemView)
     }
 
     // Bind the data with UI element
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        MaterialPenjualan materialPenjualan = materialPenjualans.get(position);
+        Log.i("TEST", "Position " + position);
+        final MaterialPenjualan materialPenjualan = materialPenjualanArrayList.get(position);
 
         // get every single data from list material penjualan file
         holder.materialPenjualan = materialPenjualan;
@@ -46,34 +51,39 @@ public class PenjualanAdapter extends RecyclerView.Adapter<PenjualanAdapter.View
         holder.namaBarangPenjualan.setText(materialPenjualan.getName());
         holder.kodeBarangPenjualan.setText(materialPenjualan.getCode());
         holder.grupBarangPenjualan.setText(materialPenjualan.getGroup());
+//        holder.jumlahBarangPenjualan.setText(materialPenjualan.getUserInputQuantity());
         holder.hargaBarangPenjualan.setText(String.valueOf(materialPenjualan.getPrice()));
 
         // change the background when customer quantity exceed the limit
-//        holder.grupBarangPenjualan.addTextChangedListener(new TextWatcher() {
+//        holder.jumlahBarangPenjualan.addTextChangedListener(new TextWatcher() {
 //            @Override
 //            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-//
+//                Log.i("textbefore", String.valueOf(s));
 //            }
 //
 //            @Override
 //            public void onTextChanged(CharSequence s, int start, int before, int count) {
-//                for(int n = 0; n < holder)
-//                int customerQuantity = Integer.valueOf(s.toString());
+//                Log.i("textchange", String.valueOf(s));
+//
+//                try{
+//                    int inputQuantity = Integer.parseInt(s.toString());
+//                    materialPenjualan.setUserInputQuantity(inputQuantity);
+//                }
+//                catch(NumberFormatException ex){
+//                }
 //            }
 //
 //            @Override
 //            public void afterTextChanged(Editable s) {
-//                int limit = listPenjualan.getQuantity();
-//
-//                // check if the customer quantity exceed the limit
-//                if(limit)
+//                Log.i("textafter", String.valueOf(s));
+//                materialPenjualan.getUserInputQuantity();
 //            }
 //        });
     }
 
     @Override
     public int getItemCount() {
-        return materialPenjualans.size();
+        return materialPenjualanArrayList.size();
     }
 
     // Delete the current recycleview
@@ -84,7 +94,7 @@ public class PenjualanAdapter extends RecyclerView.Adapter<PenjualanAdapter.View
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        materialPenjualans.remove(position);
+                        materialPenjualanArrayList.remove(position);
                         notifyItemRemoved(position);
                     }
                 }).setNegativeButton("Batal", new DialogInterface.OnClickListener() {
@@ -125,6 +135,30 @@ public class PenjualanAdapter extends RecyclerView.Adapter<PenjualanAdapter.View
                     delete(position);
                 }
             });
+        }
+    }
+
+    // TextWatcher for getting customer quantity value from recycler view
+    private class customerQuantityEditText implements TextWatcher{
+        private int position;
+
+        public void updatePosition(int position) {
+            this.position = position;
+        }
+
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+
         }
     }
 

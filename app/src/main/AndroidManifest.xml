@@ -15,7 +15,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".LoginActivity"
+        <activity
+            android:name=".LoginActivity"
             android:noHistory="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -41,8 +42,10 @@
         <activity android:name=".NavigationMenuActivity" />
         <activity android:name=".Penjualan.Search.SearchActivity" />
         <activity android:name=".Penjualan.PenjualanSuccessActivity" />
-        <activity android:name=".Gudang.Update.UpdateActivity"
-            android:parentActivityName=".Gudang.Detail.DetailInventoryActivity"></activity>
+        <activity
+            android:name=".Gudang.Update.UpdateActivity"
+            android:parentActivityName=".Gudang.Detail.DetailInventoryActivity" />
+        <activity android:name=".Histori_Penjualan.Detail.DetailHistoriPenjualanActivity"></activity>
     </application>
 
 </manifest>

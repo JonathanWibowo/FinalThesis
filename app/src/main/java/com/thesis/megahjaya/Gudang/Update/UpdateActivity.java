@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -27,7 +28,7 @@ public class UpdateActivity extends AppCompatActivity {
     private final static String url = "https://thesisandroid.000webhostapp.com/material/updateMaterial.php";
 
     private Toolbar toolbar;
-    private EditText name, code, quantity, minimum, price;
+    private EditText name, code, measurement, group, quantity, minimum, price;
     private Button lanjut;
 
     @Override
@@ -38,6 +39,8 @@ public class UpdateActivity extends AppCompatActivity {
         toolbar = (Toolbar) findViewById(R.id.updateToolbar);
         name = (EditText) findViewById(R.id.updateMaterialName);
         code = (EditText) findViewById(R.id.updateMaterialCode);
+        measurement = (EditText) findViewById(R.id.updateMaterialMeasurement);
+        group = (EditText) findViewById(R.id.updateMaterialGroup);
         quantity = (EditText) findViewById(R.id.updateMaterialQuantity);
         minimum = (EditText) findViewById(R.id.updateMaterialMinimumStock);
         price = (EditText) findViewById(R.id.updateMaterialPrice);
@@ -52,9 +55,10 @@ public class UpdateActivity extends AppCompatActivity {
 
         name.setText(getIntent().getStringExtra("detailMaterialName"));
         code.setText(getIntent().getStringExtra("detailMaterialCode"));
-//        group.setText(getIntent().getStringExtra("detailMaterialGroup"));
+        measurement.setText(getIntent().getStringExtra("detailMaterialMeasurement"));
+        group.setText(getIntent().getStringExtra("detailMaterialGroup"));
         quantity.setText(getIntent().getStringExtra("detailMaterialQuantity"));
-//        minimum.setText(getIntent().getStringExtra(""));
+        minimum.setText(getIntent().getStringExtra("detailMaterialMinimum"));
         price.setText(getIntent().getStringExtra("detailMaterialPrice"));
 
         lanjut.setOnClickListener(new View.OnClickListener() {
@@ -62,16 +66,19 @@ public class UpdateActivity extends AppCompatActivity {
             public void onClick(View v) {
                 updateData();
 
-                startActivity(new Intent(UpdateActivity.this, DetailInventoryActivity.class));
+//                startActivity(new Intent(UpdateActivity.this, DetailInventoryActivity.class));
             }
         });
     }
 
     private void updateData(){
-        HashMap<String, String> hashMap = new HashMap<>();
+        final HashMap<String, String> hashMap = new HashMap<>();
         hashMap.put("name", name.getText().toString());
         hashMap.put("itemCode", code.getText().toString());
+        hashMap.put("measurement", measurement.getText().toString());
+        hashMap.put("group", group.getText().toString());
         hashMap.put("quantity", quantity.getText().toString());
+        hashMap.put("minimum", minimum.getText().toString());
         hashMap.put("price", price.getText().toString());
 
         JSONObject jsonObject = new JSONObject(hashMap);
@@ -84,7 +91,9 @@ public class UpdateActivity extends AppCompatActivity {
                             Integer getResponseCode = response.getInt("status");
 
                             if(getResponseCode == 200){
-                                startActivity(new Intent(UpdateActivity.this, DetailInventoryActivity.class));
+                                Log.i("getResponseCode", String.valueOf(getResponseCode));
+                                updateResult(hashMap);
+//                                startActivity(new Intent(UpdateActivity.this, DetailInventoryActivity.class));
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -101,5 +110,12 @@ public class UpdateActivity extends AppCompatActivity {
             }
         });
         Singleton.getInstance(this).addToRequestQueue(jsonObjectRequest);
+    }
+
+    public void updateResult(HashMap<String, String> hashMap){
+        Intent intent = new Intent(UpdateActivity.this, DetailInventoryActivity.class);
+        intent.putExtra("updateResult", hashMap);
+        setResult(RESULT_OK);
+        finish();
     }
 }

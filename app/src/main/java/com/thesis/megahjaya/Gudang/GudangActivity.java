@@ -50,7 +50,7 @@ public class GudangActivity extends AppCompatActivity {
     private InventoryAdapter inventoryAdapter;
 
     // For list of the item
-    private ArrayList<MaterialInventory> listMaterialInventories;
+    private ArrayList<MaterialInventory> materialInventoryArrayList;
 
     // For pagination
 //    prevNextPagination prevNextPaginationInventory = new prevNextPagination();
@@ -65,9 +65,9 @@ public class GudangActivity extends AppCompatActivity {
 
     // For search item
     private SearchView searchMaterial;
-
     private Toolbar toolbar;
 
+    private static final int GET_RESULT = 0;
     private static final String url = "https://thesisandroid.000webhostapp.com/material/listMaterial.php";
 
     @Override
@@ -78,11 +78,9 @@ public class GudangActivity extends AppCompatActivity {
         // Pagination
 //        prev = (Button) findViewById(R.id.previousBtn);
 //        next = (Button) findViewById(R.id.nextBtn);
+        toolbar = (Toolbar) findViewById(R.id.gudangToolbar);
         searchMaterial = (SearchView) findViewById(R.id.gudangSearchView);
 //        prev.setEnabled(false); // make the button cannot be click because user will visit the first pagination for inventory page
-
-        toolbar = (Toolbar) findViewById(R.id.gudangToolbar);
-        setSupportActionBar(toolbar);
 
         // Manage recyclerview
         manageRecyclewView();
@@ -131,6 +129,8 @@ public class GudangActivity extends AppCompatActivity {
 //    }
 
     public void navigationBar(){
+        setSupportActionBar(toolbar);
+
         drawerLayout = (DrawerLayout) findViewById(R.id.gudangDrawerLayout);
         navigationView = (NavigationView) findViewById(R.id.gudangNavigationMenu);
 
@@ -146,18 +146,23 @@ public class GudangActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch(item.getItemId()){
                     case R.id.penjualanMenu:
-                        Intent penjualan = new Intent(getApplicationContext(), PenjualanActivity.class);
+                        Intent penjualan = new Intent(GudangActivity.this, PenjualanActivity.class);
                         startActivity(penjualan);
                         break;
 
                     case R.id.historiPenjualanMenu:
-                        Intent historiPenjualan = new Intent(getApplicationContext(), HistoriPenjualanActivity.class);
+                        Intent historiPenjualan = new Intent(GudangActivity.this, HistoriPenjualanActivity.class);
                         startActivity(historiPenjualan);
                         break;
 
                     case R.id.gudangMenu:
-                        Intent gudang = new Intent(getApplicationContext(), GudangActivity.class);
-                        startActivity(gudang);
+                        finish();
+                        startActivity(getIntent());
+                        break;
+
+                    case R.id.logoutMenu:
+                        Intent logout = new Intent(GudangActivity.this, LoginActivity.class);
+                        startActivity(logout);
                         break;
                 }
 
@@ -181,12 +186,9 @@ public class GudangActivity extends AppCompatActivity {
         // For the inventory menu (not the navigation bar menu)
         switch (item.getItemId()){
             case R.id.addNewMaterial:
-                Intent addNewMaterialIntent = new Intent(getApplicationContext(), AddNewMaterialActivity.class);
-                startActivity(addNewMaterialIntent);
-                break;
-            case R.id.addMaterialQuantity:
-                Intent intent = new Intent(getApplicationContext(), SuccessAddNewActivity.class);
-                startActivity(intent);
+//                Intent addNewMaterialIntent = new Intent(GudangActivity.this, AddNewMaterialActivity.class);
+//                startActivity(addNewMaterialIntent);
+                startActivityForResult(new Intent(GudangActivity.this, AddNewMaterialActivity.class), GET_RESULT);
                 break;
         }
 
@@ -198,11 +200,12 @@ public class GudangActivity extends AppCompatActivity {
     }
 
     private void manageRecyclewView(){
+        LinearLayoutManager linearLayoutManagerInventory = new LinearLayoutManager(this);
+
         recyclerView = (RecyclerView) findViewById(R.id.gudangRecyclerView);
         recyclerView.setHasFixedSize(true);
-        LinearLayoutManager linearLayoutManagerInventory = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(linearLayoutManagerInventory);
-        listMaterialInventories = new ArrayList<>();
+        materialInventoryArrayList = new ArrayList<>();
     }
 
     private void search(){
@@ -216,7 +219,7 @@ public class GudangActivity extends AppCompatActivity {
             public boolean onQueryTextChange(String string) {
                 ArrayList<MaterialInventory> getListInventoryName = new ArrayList<>();
 
-                for(MaterialInventory listInventory : listMaterialInventories){
+                for(MaterialInventory listInventory : materialInventoryArrayList){
                     String getMaterialName = listInventory.getName().toLowerCase();
 
                     if(getMaterialName.contains(string)){
@@ -257,17 +260,17 @@ public class GudangActivity extends AppCompatActivity {
                                     MaterialInventory listInventory = new MaterialInventory(
                                             jsonObject.getString("name"),
                                             jsonObject.getString("itemCode"),
-                                            jsonObject.getString("desc"),
+                                            jsonObject.getString("measurement"),
                                             jsonObject.getString("group"),
                                             jsonObject.getInt("quantity"),
                                             jsonObject.getInt("minimum"),
                                             jsonObject.getInt("price")
                                     );
-                                    listMaterialInventories.add(listInventory);
+                                    materialInventoryArrayList.add(listInventory);
                                 }
 
                                 // Set the adapter
-                                inventoryAdapter = new InventoryAdapter(listMaterialInventories, getApplicationContext());
+                                inventoryAdapter = new InventoryAdapter(materialInventoryArrayList, getApplicationContext());
                                 recyclerView.setAdapter(inventoryAdapter);
                             }
                         } catch (JSONException e) {
@@ -294,7 +297,16 @@ public class GudangActivity extends AppCompatActivity {
         Singleton.getInstance(this).addToRequestQueue(jsonObjectRequest);
     }
 
-//    public void paginationButton(){
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(requestCode == GET_RESULT && resultCode == RESULT_OK){
+            Toast.makeText(GudangActivity.this, "Barang berhasil ditambahkan", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    //    public void paginationButton(){
 //        prev.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {

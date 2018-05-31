@@ -5,16 +5,19 @@ import android.os.Parcelable;
 
 public class MaterialPenjualan implements Parcelable {
 
-    private String name, code, description, group;
-    private int quantity, price;
+    private String name, code, group;
+    private int quantity, userInputQuantity, price;
 
-    public MaterialPenjualan(String name, String code, String description, String group, int quantity, int price) {
+    public MaterialPenjualan(String name, String code, String group, int quantity, int price) {
         this.name = name;
         this.code = code;
-        this.description = description;
         this.group = group;
         this.quantity = quantity;
         this.price = price;
+    }
+
+    public void setUserInputQuantity(int userInputQuantity) {
+        this.userInputQuantity = userInputQuantity;
     }
 
     public String getName() {
@@ -25,10 +28,6 @@ public class MaterialPenjualan implements Parcelable {
         return code;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
     public String getGroup() {
         return group;
     }
@@ -36,6 +35,7 @@ public class MaterialPenjualan implements Parcelable {
     public int getQuantity() {
         return quantity;
     }
+
 
     public int getPrice() {
         return price;
@@ -50,7 +50,6 @@ public class MaterialPenjualan implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(this.name);
         dest.writeString(this.code);
-        dest.writeString(this.description);
         dest.writeString(this.group);
         dest.writeInt(this.quantity);
         dest.writeInt(this.price);
@@ -59,7 +58,6 @@ public class MaterialPenjualan implements Parcelable {
     protected MaterialPenjualan(Parcel in) {
         this.name = in.readString();
         this.code = in.readString();
-        this.description = in.readString();
         this.group = in.readString();
         this.quantity = in.readInt();
         this.price = in.readInt();

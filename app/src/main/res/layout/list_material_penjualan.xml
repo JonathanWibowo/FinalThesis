@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
@@ -9,51 +11,67 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <RelativeLayout
+        <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginBottom="5dp"
-            android:background="@drawable/list_layout"
-            android:padding="5dp">
+            android:background="@drawable/list_layout">
 
             <TextView
                 android:id="@+id/penjualanMaterialName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
                 android:text="@string/materialName"
                 android:textAllCaps="true"
                 android:textSize="16sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/penjualanMaterialCode"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/penjualanMaterialName"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:text="@string/materialCode"
                 android:textAllCaps="true"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/penjualanMaterialName" />
 
             <TextView
                 android:id="@+id/penjualanMaterialDescription"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/penjualanMaterialCode"
+                android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:text="@string/materialDesc"
                 android:textAllCaps="true"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/penjualanMaterialCode" />
 
             <TextView
                 android:id="@+id/penjualanGroupText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/penjualanMaterialDescription"
+                android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
-                android:text="@string/groupText"
+                android:text="@string/tipeText"
                 android:textAllCaps="true"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/penjualanMaterialDescription" />
 
             <TextView
                 android:id="@+id/penjualanMaterialGroup"
@@ -61,20 +79,26 @@
                 android:layout_height="wrap_content"
                 android:layout_alignBaseline="@+id/penjualanGroupText"
                 android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
                 android:layout_toEndOf="@id/penjualanGroupText"
-                android:text="@string/materialGroup"
+                android:text="@string/materialType"
                 android:textAllCaps="true"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                app:layout_constraintStart_toEndOf="@+id/penjualanGroupText"
+                app:layout_constraintTop_toBottomOf="@+id/penjualanMaterialDescription" />
 
             <TextView
                 android:id="@+id/penjualanJumlahText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/penjualanGroupText"
-                android:layout_marginTop="20dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="16dp"
                 android:text="@string/jumlah"
                 android:textAllCaps="true"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/penjualanGroupText" />
 
             <EditText
                 android:id="@+id/penjualanMaterialCustomerQuantity"
@@ -82,11 +106,14 @@
                 android:layout_height="40dp"
                 android:layout_alignBaseline="@+id/penjualanJumlahText"
                 android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
                 android:layout_toEndOf="@id/penjualanJumlahText"
                 android:ems="4"
                 android:hint="@string/quantity"
                 android:inputType="number"
-                android:labelFor="@id/penjualanJumlahText" />
+                android:labelFor="@id/penjualanJumlahText"
+                app:layout_constraintStart_toEndOf="@+id/penjualanJumlahText"
+                app:layout_constraintTop_toBottomOf="@+id/penjualanMaterialGroup" />
 
             <TextView
                 android:id="@+id/penjualanMaterialPrice"
@@ -95,8 +122,17 @@
                 android:layout_alignBaseline="@+id/penjualanMaterialCustomerQuantity"
                 android:layout_alignBottom="@+id/penjualanMaterialCustomerQuantity"
                 android:layout_alignParentEnd="true"
+                android:layout_marginBottom="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
                 android:text="@string/materialPrice"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toEndOf="@+id/penjualanMaterialCustomerQuantity"
+                app:layout_constraintTop_toBottomOf="@+id/imageDelete"
+                app:layout_constraintVertical_bias="1.0" />
 
             <ImageView
                 android:id="@+id/imageDelete"
@@ -104,10 +140,13 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
+                android:layout_marginEnd="8dp"
                 android:contentDescription="@string/delete"
-                android:src="@drawable/ic_delete" />
+                android:src="@drawable/ic_delete"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/penjualanMaterialCode" />
 
-        </RelativeLayout>
+        </android.support.constraint.ConstraintLayout>
 
     </android.support.v7.widget.CardView>
 

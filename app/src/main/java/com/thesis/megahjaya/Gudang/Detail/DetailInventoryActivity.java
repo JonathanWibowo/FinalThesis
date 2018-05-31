@@ -14,11 +14,15 @@ import com.thesis.megahjaya.R;
 
 import org.w3c.dom.Text;
 
+import java.util.HashMap;
+
 public class DetailInventoryActivity extends AppCompatActivity {
+
+    private final int GET_DATA = 0;
 
     private Toolbar toolbar;
     private Button ubah;
-    private TextView namaBarang, kodeBarang, deskripsiBarang, grupBarang, jumlahBarang, stokMinimumBarang, hargaBarang;
+    private TextView namaBarang, kodeBarang, measurementBarang, grupBarang, jumlahBarang, stokMinimumBarang, hargaBarang;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,7 +32,7 @@ public class DetailInventoryActivity extends AppCompatActivity {
         toolbar = (Toolbar) findViewById(R.id.detailToolbar);
         namaBarang = (TextView) findViewById(R.id.detailMaterialName);
         kodeBarang = (TextView) findViewById(R.id.detailMaterialCode);
-        deskripsiBarang = (TextView) findViewById(R.id.detailMaterialDescription);
+        measurementBarang = (TextView) findViewById(R.id.detailMaterialUnit);
         grupBarang = (TextView) findViewById(R.id.detailMaterialGroup);
         jumlahBarang = (TextView) findViewById(R.id.detailMaterialQuantity);
         stokMinimumBarang = (TextView) findViewById(R.id.detailMaterialMinimumStock);
@@ -40,13 +44,7 @@ public class DetailInventoryActivity extends AppCompatActivity {
         getSupportActionBar().setTitle(getIntent().getStringExtra("detailMaterialName"));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        namaBarang.setText(getIntent().getStringExtra("detailMaterialName"));
-        kodeBarang.setText(getIntent().getStringExtra("detailMaterialCode"));
-        deskripsiBarang.setText(getIntent().getStringExtra("detailMaterialDescription"));
-        grupBarang.setText(getIntent().getStringExtra("detailMaterialGroup"));
-        jumlahBarang.setText(getIntent().getStringExtra("detailMaterialQuantity"));
-        stokMinimumBarang.setText(getIntent().getStringExtra("detailMaterialMinimum"));
-        hargaBarang.setText(getIntent().getStringExtra("detailMaterialPrice"));
+        getDetailData();
 
         ubah.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -54,12 +52,41 @@ public class DetailInventoryActivity extends AppCompatActivity {
                 Intent updateIntent = new Intent(DetailInventoryActivity.this, UpdateActivity.class);
                 updateIntent.putExtra("detailMaterialName", namaBarang.getText().toString());
                 updateIntent.putExtra("detailMaterialCode", kodeBarang.getText().toString());
+                updateIntent.putExtra("detailMaterialMeasurement", measurementBarang.getText().toString());
                 updateIntent.putExtra("detailMaterialGroup", grupBarang.getText().toString());
                 updateIntent.putExtra("detailMaterialQuantity", jumlahBarang.getText().toString());
                 updateIntent.putExtra("detailMaterialMinimum", stokMinimumBarang.getText().toString());
                 updateIntent.putExtra("detailMaterialPrice", hargaBarang.getText().toString());
-                startActivity(updateIntent);
+                startActivityForResult(updateIntent, GET_DATA);
             }
         });
+    }
+
+    private void getDetailData(){
+        namaBarang.setText(getIntent().getStringExtra("detailMaterialName"));
+        kodeBarang.setText(getIntent().getStringExtra("detailMaterialCode"));
+        measurementBarang.setText(getIntent().getStringExtra("detailMaterialMeasurement"));
+        grupBarang.setText(getIntent().getStringExtra("detailMaterialGroup"));
+        jumlahBarang.setText(getIntent().getStringExtra("detailMaterialQuantity"));
+        stokMinimumBarang.setText(getIntent().getStringExtra("detailMaterialMinimum"));
+        hargaBarang.setText(getIntent().getStringExtra("detailMaterialPrice"));
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(requestCode == GET_DATA && resultCode == RESULT_OK){
+            Bundle getDetailData = data.getExtras();
+
+            HashMap<String, String> hashMap = (HashMap) getDetailData.get("updateResult");
+            namaBarang.setText(hashMap.get("name"));
+            kodeBarang.setText(hashMap.get("itemCode"));
+            measurementBarang.setText(hashMap.get("measurement"));
+            grupBarang.setText(hashMap.get("group"));
+            jumlahBarang.setText(hashMap.get("quantity"));
+            stokMinimumBarang.setText(hashMap.get("minimum"));
+            hargaBarang.setText(hashMap.get("price"));
+        }
     }
 }

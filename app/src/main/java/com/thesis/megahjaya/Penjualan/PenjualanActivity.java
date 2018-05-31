@@ -62,20 +62,17 @@ public class PenjualanActivity extends AppCompatActivity {
 
     // For list penjualanTemp customer (save data)
     private PenjualanTemp penjualanTemp;
-    private ArrayList<PenjualanTemp> penjualanTempArrayList;
+    private ArrayList<PenjualanTemp> penjualanTempArrayList = new ArrayList<>();
 
-    // For search item
-    private SearchView searchMaterial;
-
-    // For getting value back from barcode scanner process
+    // For getting value back (item code) which will be use for getting material
     private final int GET_BARCODE = 0;
+    private final int GET_MATERIAL_CODE = 1;
 
     // For calculate total unit price
     private Integer materialQuantity;
     private Integer materialPrice;
     private Integer totalMaterialUnit;
 
-    private PenjualanAdapter.ViewHolder penjualanAdapterViewHolder;
 
     int materialQuantityDatabase; // For quantity from database
     ArrayList<String> materialCodeDatabase = new ArrayList<>(); // For store material code
@@ -111,7 +108,12 @@ public class PenjualanActivity extends AppCompatActivity {
         lanjut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                processData();
+                if(recyclerView.getAdapter().getItemCount() == 0){
+                    Toast.makeText(PenjualanActivity.this, "Isi barang terlebih dahulu", Toast.LENGTH_LONG).show();
+                }
+                else {
+                    processData();
+                }
             }
         });
     }
@@ -143,36 +145,6 @@ public class PenjualanActivity extends AppCompatActivity {
         // Set the adapter
         penjualanAdapter = new PenjualanAdapter(materialPenjualanArrayList, PenjualanActivity.this);
         recyclerView.setAdapter(penjualanAdapter);
-    }
-
-    // save the list data to new array list and send to next activity using parcelable
-    private void processData(){
-        penjualanTempArrayList = new ArrayList<>();
-
-        // get list of viewholder
-        for(int y = 0; y < recyclerView.getChildCount(); y++){
-            PenjualanAdapter.ViewHolder viewHolder = (PenjualanAdapter.ViewHolder) recyclerView.getChildViewHolder(recyclerView.getChildAt(y));
-
-            // set and calculate total material unit
-            materialQuantity = Integer.parseInt(viewHolder.jumlahBarangPenjualan.getText().toString());
-            materialPrice = Integer.parseInt(viewHolder.hargaBarangPenjualan.getText().toString());
-            totalMaterialUnit = materialQuantity * materialPrice;
-
-            // get all data & move to another array list for parcel
-            penjualanTemp = new PenjualanTemp(
-                    viewHolder.namaBarangPenjualan.getText().toString(),
-                    Integer.parseInt(viewHolder.jumlahBarangPenjualan.getText().toString()),
-                    Integer.parseInt(viewHolder.hargaBarangPenjualan.getText().toString()),
-                    totalMaterialUnit
-            );
-
-            penjualanTempArrayList.add(penjualanTemp);
-        }
-
-        // Send array list to penjualanTemp success page using parcelable
-        Intent sendListMaterialIntent = new Intent(PenjualanActivity.this, PenjualanInfoActivity.class);
-        sendListMaterialIntent.putParcelableArrayListExtra("listMaterial", penjualanTempArrayList);
-        startActivity(sendListMaterialIntent);
     }
 
     // Set search view on toolbar & make search function
@@ -236,21 +208,23 @@ public class PenjualanActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch(item.getItemId()){
                     case R.id.penjualanMenu:
-                        Intent penjualan = new Intent(getApplicationContext(), PenjualanActivity.class);
-                        startActivity(penjualan);
+                        finish();
+                        startActivity(getIntent());
                         break;
 
                     case R.id.historiPenjualanMenu:
-                        Intent historiPenjualan = new Intent(getApplicationContext(), HistoriPenjualanActivity.class);
+                        Intent historiPenjualan = new Intent(PenjualanActivity.this, HistoriPenjualanActivity.class);
                         startActivity(historiPenjualan);
                         break;
 
                     case R.id.gudangMenu:
-                        Intent gudang = new Intent(getApplicationContext(), GudangActivity.class);
+                        Intent gudang = new Intent(PenjualanActivity.this, GudangActivity.class);
                         startActivity(gudang);
                         break;
 
                     case R.id.logoutMenu:
+                        Intent logout = new Intent(PenjualanActivity.this, LoginActivity.class);
+                        startActivity(logout);
                         break;
                 }
 
@@ -275,6 +249,7 @@ public class PenjualanActivity extends AppCompatActivity {
         switch(item.getItemId()){
             case R.id.searchIcon:
                 startActivity(new Intent(PenjualanActivity.this, SearchActivity.class));
+//                startActivityForResult(new Intent(PenjualanActivity.this, SearchActivity.class), GET_MATERIAL_CODE);
                 break;
         }
 
@@ -323,7 +298,6 @@ public class PenjualanActivity extends AppCompatActivity {
                                     MaterialPenjualan listPenjualan = new MaterialPenjualan(
                                             insideArray.getString("name"),
                                             insideArray.getString("itemCode"),
-                                            insideArray.getString("desc"),
                                             insideArray.getString("group"),
                                             insideArray.getInt("quantity"),
                                             insideArray.getInt("price")
@@ -336,9 +310,9 @@ public class PenjualanActivity extends AppCompatActivity {
 //                                        }
 //                                    }
                                     materialPenjualanArrayList.add(listPenjualan);
+                                    Log.i("TEST", materialPenjualanArrayList.toString());
                                 }
                                 penjualanAdapter.notifyDataSetChanged();
-//                                Log.i("MATERIALCODEDATABASE", String.valueOf(materialQuantityDatabase));
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -371,5 +345,33 @@ public class PenjualanActivity extends AppCompatActivity {
             String getBarcodeData = data.getStringExtra("scannedBarcode");
             getMaterialData(getBarcodeData);
         }
+    }
+
+    // save the list data to new array list and send to next activity using parcelable
+    private void processData(){
+        // get list of viewholder
+        for(int y = 0; y < recyclerView.getChildCount(); y++){
+            PenjualanAdapter.ViewHolder viewHolder = (PenjualanAdapter.ViewHolder) recyclerView.getChildViewHolder(recyclerView.getChildAt(y));
+
+            // set and calculate total material unit
+            materialQuantity = Integer.parseInt(viewHolder.jumlahBarangPenjualan.getText().toString());
+            materialPrice = Integer.parseInt(viewHolder.hargaBarangPenjualan.getText().toString());
+            totalMaterialUnit = materialQuantity * materialPrice;
+
+            // get all data & move to another array list for parcel
+            penjualanTemp = new PenjualanTemp(
+                    viewHolder.namaBarangPenjualan.getText().toString(),
+                    Integer.parseInt(viewHolder.jumlahBarangPenjualan.getText().toString()),
+                    Integer.parseInt(viewHolder.hargaBarangPenjualan.getText().toString()),
+                    totalMaterialUnit
+            );
+
+            penjualanTempArrayList.add(penjualanTemp);
+        }
+
+        // Send array list to penjualanTemp success page using parcelable
+        Intent sendListMaterialIntent = new Intent(PenjualanActivity.this, PenjualanInfoActivity.class);
+        sendListMaterialIntent.putParcelableArrayListExtra("listMaterial", penjualanTempArrayList);
+        startActivity(sendListMaterialIntent);
     }
 }

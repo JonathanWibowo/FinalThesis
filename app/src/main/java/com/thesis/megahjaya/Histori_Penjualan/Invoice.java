@@ -1,20 +1,33 @@
 package com.thesis.megahjaya.Histori_Penjualan;
 
+import java.util.ArrayList;
+
 public class Invoice {
 
-    String invoiceDate, customerName, customerAddress, customerInfo;
-    Integer totalWholePrice;
+    String invoiceDate, invoiceNumber, customerName, customerAddress, customerInfo;
+    Integer invoiceType, totalWholePrice;
+//    ArrayList<Object> customerListMaterial;
 
-    public Invoice(String invoiceDate, String customerName, String customerAddress, String customerInfo, Integer totalWholePrice) {
-        this.invoiceDate = invoiceDate;
+    public Invoice(Integer invoiceType, /*String invoiceDate,*/ String invoiceNumber, String customerName, String customerAddress, String customerInfo, Integer totalWholePrice) {
+        this.invoiceType = invoiceType;
+//        this.invoiceDate = invoiceDate;
+        this.invoiceNumber = invoiceNumber;
         this.customerName = customerName;
         this.customerAddress = customerAddress;
         this.customerInfo = customerInfo;
         this.totalWholePrice = totalWholePrice;
     }
 
-    public String getInvoiceDate() {
-        return invoiceDate;
+    public Integer getInvoiceType() {
+        return invoiceType;
+    }
+
+//    public String getInvoiceDate() {
+//        return invoiceDate;
+//    }
+
+    public String getInvoiceNumber() {
+        return invoiceNumber;
     }
 
     public String getCustomerName() {

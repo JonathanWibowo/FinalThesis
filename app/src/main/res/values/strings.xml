@@ -45,8 +45,17 @@
     <string name="namaPembeli">Nama Pembeli/Toko</string>
     <string name="alamatText">Alamat:</string>
     <string name="alamat">Alamat</string>
+    <string name="teleponText">Nomor Telepon:</string>
+    <string name="telepon">02135264856</string>
     <string name="keteranganText">Keterangan:</string>
     <string name="keterangan">Keterangan</string>
+    <string name="diskonText">Diskon:</string>
+    <string name="diskon">Diskon</string>
+    <string name="statusText">Status:</string>
+    <string-array name="listStatus">
+        <item>Belum Lunas</item>
+        <item>Lunas</item>
+    </string-array>
     <!-- PenjualanTemp Info -->
 
     <!-- PenjualanTemp Success -->
@@ -72,9 +81,9 @@
     <string name="materialName">Nama Barang</string>
     <string name="materialCode">Kode Barang</string>
     <string name="materialDesc">Deskripsi</string>
-    <string name="groupText">Group: </string>
-    <string name="materialGroup">Nama_Group</string>
-    <string name="satuanText">Satuan:</string>
+    <string name="tipeText">Tipe: </string>
+    <string name="materialType">Nama_Tipe</string>
+    <string name="satuanText">Satuan barang:</string>
     <string name="materialUnit">Kg</string>
     <string name="jumlahBarangText">Jumlah Barang: </string>
     <string name="quantity">123</string>
@@ -86,27 +95,27 @@
     <!-- Update -->
     <string name="updateNamaBarangText">Nama Barang:</string>
     <string name="updateKodeBarangText">Kode Barang:</string>
+    <string name="updateSatuanBarangText">Satuan Barang:</string>
+    <string name="updateTipeBarangText">Tipe Barang:</string>
     <string name="updateJumlahBarangText">Jumlah Barang: </string>
-    <string name="updateHargaBarangText">Harga Barang: </string>
     <string name="updateStokMinimumText">Stok Minimum:</string>
+    <string name="updateHargaBarangText">Harga Barang: </string>
     <!-- Update -->
     <!-- Tambah Barang Baru -->
     <string name="addMaterialNameText">Nama Barang:</string>
     <string name="addMaterialGroupText">Group/Kategori Barang:</string>
     <string name="addMaterialCodeText">Kode Barang:</string>
-    <!--<string name="addMaterialDescriptionText">Deskripsi Barang:</string>-->
     <string name="addMaterialQuantityText">Jumlah Barang:</string>
     <string name="addMaterialQuantityUnitType">Satuan:</string>
     <string name="addMaterialPriceText">Harga Barang:</string>
     <string name="addMaterialMinimumText">Jumlah Minimum:</string>
     <string name="materialNamePlaceholder">Besi Beton 10 mm/Kuas 2"/Keni 2"/...</string>
     <string name="materialCodePlaceholder">QWERT/YUIOP/...</string>
-    <!--<string name="materialDescriptionPlaceholder">Tulis deskripsi barang</string>-->
     <string name="materialGroupPlaceholder">Besi/Cat/Keni/Pipa/Triplek/dll...</string>
     <string name="materialQuantityPlaceholder">20/50/120/180/...</string>
-    <string name="materialUnitTypePlaceholder">Kg, Ons, Lembar, ...</string>
+    <string name="materialUnitTypePlaceholder">Kg/Ons/Lembar/...</string>
     <string name="materialPricePlaceholder">12000/25000/68000/...</string>
-    <string name="materialMinimumPlaceholder">12, 34, 56, ...</string>
+    <string name="materialMinimumPlaceholder">12/34/56/...</string>
     <string name="successAddNewMaterial"></string>
     <!-- Tambah Barang Baru -->
     <!-- Others -->

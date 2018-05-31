@@ -14,6 +14,8 @@ import com.thesis.megahjaya.Histori_Penjualan.HistoriPenjualanActivity;
 import com.thesis.megahjaya.Penjualan.Adapter.PenjualanSuccessAdapter;
 import com.thesis.megahjaya.R;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 
 public class PenjualanSuccessActivity extends AppCompatActivity {
@@ -33,11 +35,7 @@ public class PenjualanSuccessActivity extends AppCompatActivity {
     // For calculate whole material
     private Integer totalWholeMaterial = 0;
 
-    private String setCustomerName;
-    private String setInvoiceDate;
-    private Integer setTotalWholePrice;
-
-    private TextView customerName, invoiceDate, totalWholePrice;
+    private TextView invoiceDate, customerName, customerAddress, customerInfo, totalWholePrice;
     private Button cekBon, menuUtama;
 
     @Override
@@ -47,25 +45,24 @@ public class PenjualanSuccessActivity extends AppCompatActivity {
 
         invoiceDate = (TextView) findViewById(R.id.pembelianSuccessCurrentDate);
         customerName = (TextView) findViewById(R.id.pembelianSuccessCustomerName);
+        customerAddress = (TextView) findViewById(R.id.pembelianSuccessCustomerAddress);
+        customerInfo = (TextView) findViewById(R.id.pembelianSuccessCustomerInformation);
         totalWholePrice = (TextView) findViewById(R.id.pembelianSuccessTotalPrice);
         cekBon = (Button) findViewById(R.id.penjualanSuccessCheckInvoiceBtn);
         menuUtama = (Button) findViewById(R.id.penjualanSuccessMainMenuBtn);
 
-        recyclerView = (RecyclerView) findViewById(R.id.penjualanSuccessRecyclerView);
-        recyclerView.setHasFixedSize(true);
-        LinearLayoutManager linearLayoutManagerSuccess = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(linearLayoutManagerSuccess);
-        listMaterialPenjualanSuccessArrayList = new ArrayList<>();
+        // Manage recycler view
+        manageRecyclerView();
 
         // Retrieve data from parcel
         retrieveAllData();
 
-        cekBon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(PenjualanSuccessActivity.this, HistoriPenjualanActivity.class));
-            }
-        });
+//        cekBon.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                startActivity(new Intent(PenjualanSuccessActivity.this, HistoriPenjualanActivity.class));
+//            }
+//        });
 
         menuUtama.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -75,14 +72,22 @@ public class PenjualanSuccessActivity extends AppCompatActivity {
         });
     }
 
+    private void manageRecyclerView(){
+        recyclerView = (RecyclerView) findViewById(R.id.penjualanSuccessRecyclerView);
+        recyclerView.setHasFixedSize(true);
+        LinearLayoutManager linearLayoutManagerSuccess = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(linearLayoutManagerSuccess);
+        listMaterialPenjualanSuccessArrayList = new ArrayList<>();
+    }
+
     // Retrieve data from parcel
     private void retrieveAllData(){
         // Retrieve parcel data
         penjualanTempArrayList = getIntent().getParcelableArrayListExtra("listMaterial");
 
         // Retrieve list of data from ArrayList
-        for(int x = 0; x < penjualanTempArrayList.size(); x++){
-            penjualanTemp = penjualanTempArrayList.get(x);
+        for(int i = 0; i < penjualanTempArrayList.size(); i++){
+            penjualanTemp = penjualanTempArrayList.get(i);
 
             // Calculate whole price
             totalWholeMaterial = totalWholeMaterial + penjualanTemp.getTotalUnitPrice();
@@ -102,9 +107,11 @@ public class PenjualanSuccessActivity extends AppCompatActivity {
         recyclerView.setAdapter(penjualanSuccessAdapter);
 
         // set customer name, invoice date & total price
-        customerName.setText(getIntent().getStringExtra("customerName"));
         invoiceDate.setText(getIntent().getStringExtra("invoiceTime"));
-        totalWholePrice.setText(getIntent().getStringExtra("totalWholeMaterialPrice"));
+        customerName.setText(getIntent().getStringExtra("customerName") + " (Bon " + getIntent().getStringExtra("invoiceType") + ")");
+        customerAddress.setText(getIntent().getStringExtra("customerAddress"));
+        customerInfo.setText(getIntent().getStringExtra("customerInfo"));
+        totalWholePrice.setText("Rp " + getIntent().getStringExtra("customerTotalPrice"));
 
 //        Log.i("GET_NAME", String.valueOf(penjualanTemp.getName()));
 //        Log.i("TOTAL_DATA", String.valueOf(penjualanTempArrayList.size()));

@@ -6,15 +6,13 @@
     android:layout_height="match_parent"
     tools:context=".Penjualan.Search.SearchActivity">
 
-    <EditText
-        android:id="@+id/editTextSearchMaterialName"
+    <SearchView
+        android:id="@+id/searchViewMaterialName"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginBottom="2dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginStart="5dp"
         android:ems="10"
         android:inputType="text"
         android:labelFor="@id/okButton"
@@ -30,7 +28,7 @@
         android:layout_centerHorizontal="true"
         android:text="@string/ambil"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/searchMaterialName"
+        app:layout_constraintStart_toEndOf="@+id/searchViewMaterialName"
         app:layout_constraintTop_toTopOf="parent" />
 
     <android.support.v7.widget.RecyclerView

@@ -63,6 +63,38 @@
             android:labelFor="@id/updateKodeBarangText" />
 
         <TextView
+            android:id="@+id/updateSatuanBarangText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/updateSatuanBarangText"
+            android:textSize="16sp" />
+
+        <EditText
+            android:id="@+id/updateMaterialMeasurement"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/materialUnitTypePlaceholder"
+            android:inputType="text"
+            android:labelFor="@id/updateKodeBarangText" />
+
+        <TextView
+            android:id="@+id/updateTipeBarangText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/updateTipeBarangText"
+            android:textSize="16sp" />
+
+        <EditText
+            android:id="@+id/updateMaterialGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/materialGroupPlaceholder"
+            android:inputType="text"
+            android:labelFor="@id/updateKodeBarangText" />
+
+        <TextView
             android:id="@+id/updateJumlahBarangText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

@@ -72,7 +72,7 @@ public class InventoryAdapter extends RecyclerView.Adapter<InventoryAdapter.View
             kodeBarangInventory = (TextView) itemView.findViewById(R.id.inventoryMaterialCode);
             grupBarangInventory = (TextView) itemView.findViewById(R.id.inventoryMaterialGroup);
             jumlahBarangInventory = (TextView) itemView.findViewById(R.id.inventoryMaterialQuantity);
-            hargaBarangInventory = (TextView) itemView.findViewById(R.id.searchMaterialPrice);
+            hargaBarangInventory = (TextView) itemView.findViewById(R.id.inventoryMaterialPrice);
         }
 
         // Creating on click for popup window
@@ -85,7 +85,7 @@ public class InventoryAdapter extends RecyclerView.Adapter<InventoryAdapter.View
             Intent intent = new Intent(context, DetailInventoryActivity.class);
             intent.putExtra("detailMaterialName", listInventory.getName());
             intent.putExtra("detailMaterialCode", listInventory.getCode());
-            intent.putExtra("detailMaterialDescription", listInventory.getDescription());
+            intent.putExtra("detailMaterialMeasurement", listInventory.getMeasurement());
             intent.putExtra("detailMaterialGroup", listInventory.getGroup());
             intent.putExtra("detailMaterialQuantity", String.valueOf(listInventory.getQuantity()));
             intent.putExtra("detailMaterialMinimum", String.valueOf(listInventory.getMinimum()));

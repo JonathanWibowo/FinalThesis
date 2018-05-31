@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
@@ -9,41 +11,52 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <RelativeLayout
+        <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/list_layout"
-            android:padding="5dp"
-            android:layout_marginBottom="5dp">
+            android:layout_marginBottom="5dp"
+            android:background="@drawable/list_layout">
 
             <TextView
                 android:id="@+id/inventoryMaterialName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
                 android:text="@string/materialName"
                 android:textAllCaps="true"
                 android:textSize="16sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/inventoryMaterialCode"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
                 android:layout_below="@+id/inventoryMaterialName"
+                android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:text="@string/materialCode"
                 android:textAllCaps="true"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/inventoryMaterialName" />
 
             <TextView
                 android:id="@+id/inventoryGroupText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/inventoryMaterialCode"
+                android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
-                android:text="@string/groupText"
+                android:text="@string/tipeText"
                 android:textAllCaps="true"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/inventoryMaterialCode" />
 
             <TextView
                 android:id="@+id/inventoryMaterialGroup"
@@ -51,52 +64,76 @@
                 android:layout_height="wrap_content"
                 android:layout_alignBaseline="@id/inventoryGroupText"
                 android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
                 android:layout_toEndOf="@id/inventoryGroupText"
-                android:text="@string/materialGroup"
+                android:text="@string/materialType"
                 android:textAllCaps="true"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                app:layout_constraintStart_toEndOf="@+id/inventoryGroupText"
+                app:layout_constraintTop_toBottomOf="@+id/inventoryMaterialCode" />
 
             <TextView
                 android:id="@+id/inventoryJumlahBarangText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/inventoryGroupText"
-                android:layout_marginTop="8dp"
+                android:layout_marginBottom="16dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="16dp"
                 android:text="@string/jumlahBarangText"
                 android:textAllCaps="true"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/inventoryMaterialGroup" />
 
             <TextView
                 android:id="@+id/inventoryMaterialQuantity"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignBaseline="@id/inventoryJumlahBarangText"
+                android:layout_marginBottom="16dp"
                 android:layout_marginStart="8dp"
+                android:layout_marginTop="16dp"
                 android:layout_toEndOf="@id/inventoryJumlahBarangText"
                 android:text="@string/quantity"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/inventoryJumlahBarangText"
+                app:layout_constraintTop_toBottomOf="@+id/inventoryMaterialGroup" />
 
             <TextView
                 android:id="@+id/inventoryRp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignBottom="@+id/searchMaterialPrice"
-                android:layout_toStartOf="@+id/searchMaterialPrice"
-                android:layout_marginEnd="5dp"
+                android:layout_alignBottom="@+id/inventoryMaterialPrice"
+                android:layout_marginBottom="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_toStartOf="@+id/inventoryMaterialPrice"
                 android:text="@string/rp"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/inventoryMaterialPrice"
+                app:layout_constraintTop_toBottomOf="@+id/inventoryMaterialName"
+                app:layout_constraintVertical_bias="1.0" />
 
             <TextView
-                android:id="@+id/searchMaterialPrice"
+                android:id="@+id/inventoryMaterialPrice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignBaseline="@+id/inventoryMaterialQuantity"
                 android:layout_alignBottom="@+id/inventoryMaterialQuantity"
                 android:layout_alignParentEnd="true"
+                android:layout_marginBottom="8dp"
+                android:layout_marginEnd="8dp"
                 android:text="@string/materialPrice"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/inventoryMaterialName"
+                app:layout_constraintVertical_bias="1.0" />
 
-        </RelativeLayout>
+        </android.support.constraint.ConstraintLayout>
 
     </android.support.v7.widget.CardView>
 
